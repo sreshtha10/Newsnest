@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Newsnest</string>
-    <string name="breakingnews">BreakingNews</string>
-    <string name="searchnews">SearchNews</string>
-    <string name="savednews">SavedNews</string>
+    <string name="breakingnews">Breaking News</string>
+    <string name="searchnews">Search News</string>
+    <string name="savednews">Saved News</string>
 </resources>

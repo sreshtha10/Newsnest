@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        app:showAsAction="ifRoom"
+        android:id="@+id/breakingNewsFragment"
+        app:showAsAction="always"
         android:title="@string/breakingnews"
         android:icon="@drawable/ic_breaking_news"
         />
 
     <item
+        android:id="@+id/searchNewsFragment"
         android:title="@string/searchnews"
         app:showAsAction="always"
         android:icon="@drawable/ic_search_news"
         />
 
     <item
+        android:id="@+id/savedNewsFragment"
         app:showAsAction="always"
         android:title="@string/savednews"
         android:icon="@drawable/ic_saved_news"
