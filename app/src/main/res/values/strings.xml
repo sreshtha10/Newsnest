@@ -3,4 +3,8 @@
     <string name="breakingnews">Breaking News</string>
     <string name="searchnews">Search News</string>
     <string name="savednews">Saved News</string>
+    <array name="BreakingNewsSpinnerArr">
+        <item>Global</item>
+        <item>India</item>
+    </array>
 </resources>

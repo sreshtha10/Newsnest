@@ -10,41 +10,41 @@ import retrofit2.http.Query
 interface NewsApi {
 
     @GET("/top-headlines")
-    fun getWorldWideHeadlines(
+    suspend fun getWorldWideHeadlines(
         @Query("page") page:Int = 1,
         @Query("apiKey") apiKey: String = Constants.API_KEY
     ):Response<NewsModel>
 
     @GET("/top-headlines")
-    fun getCountrySpecificHeadlines(
+    suspend fun getIndianHeadlines(
         @Query("page") page:Int = 1,
-        @Query("country") country:String,
+        @Query("country") country:String = "in",
         @Query("apiKey") apiKey:String = Constants.API_KEY
     ):Response<NewsModel>
 
 
     @GET("/everything")
-    fun searchSortByPopularity(
+    suspend fun searchSortByPopularity(
         @Query("page") page:Int = 1,
         @Query("q") query: String,
         @Query("sortBy") sortBy:String = "popularity",
         @Query("apiKey") apiKey: String = Constants.API_KEY
-    )
+    ):Response<NewsModel>
 
     @GET("/everything")
-    fun searchSortByRelevancy(
+    suspend  fun searchSortByRelevancy(
         @Query("page") page:Int = 1,
         @Query("q") query: String,
         @Query("sortBy") sortBy:String = "relevancy",
         @Query("apiKey") apiKey: String = Constants.API_KEY
-    )
+    ):Response<NewsModel>
 
     @GET("/everything")
-    fun searchSortByNewest(
+    suspend fun searchSortByNewest(
         @Query("page") page:Int = 1,
         @Query("q") query: String,
         @Query("sortBy") sortBy:String = "publishedAt",
         @Query("apiKey") apiKey: String = Constants.API_KEY
-    )
+    ):Response<NewsModel>
 
 }

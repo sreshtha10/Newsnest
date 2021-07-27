@@ -61,6 +61,8 @@ dependencies {
 
 
     //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
 
     //Glide
@@ -74,9 +76,10 @@ dependencies {
     //Dependency Injection
 
 
-    //Architectural components
-
-
     //Annotation Processing
+
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
 
 }
