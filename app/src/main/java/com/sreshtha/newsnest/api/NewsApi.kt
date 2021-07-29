@@ -9,21 +9,21 @@ import retrofit2.http.Query
 
 interface NewsApi {
 
-    @GET("/top-headlines")
+    @GET("v2/top-headlines")
     suspend fun getWorldWideHeadlines(
         @Query("page") page:Int = 1,
         @Query("apiKey") apiKey: String = Constants.API_KEY
     ):Response<NewsModel>
 
-    @GET("/top-headlines")
+    @GET("v2/top-headlines")
     suspend fun getIndianHeadlines(
-        @Query("page") page:Int = 1,
         @Query("country") country:String = "in",
+        @Query("page") page:Int = 1,
         @Query("apiKey") apiKey:String = Constants.API_KEY
     ):Response<NewsModel>
 
 
-    @GET("/everything")
+    @GET("v2/everything")
     suspend fun searchSortByPopularity(
         @Query("page") page:Int = 1,
         @Query("q") query: String,
@@ -31,7 +31,7 @@ interface NewsApi {
         @Query("apiKey") apiKey: String = Constants.API_KEY
     ):Response<NewsModel>
 
-    @GET("/everything")
+    @GET("v2/everything")
     suspend  fun searchSortByRelevancy(
         @Query("page") page:Int = 1,
         @Query("q") query: String,
@@ -39,7 +39,7 @@ interface NewsApi {
         @Query("apiKey") apiKey: String = Constants.API_KEY
     ):Response<NewsModel>
 
-    @GET("/everything")
+    @GET("v2/everything")
     suspend fun searchSortByNewest(
         @Query("page") page:Int = 1,
         @Query("q") query: String,

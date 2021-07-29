@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.repository.NewsRepository
-import kotlinx.coroutines.Dispatchers
+import com.sreshtha.newsnest.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -13,88 +13,54 @@ class NewsViewModel(
     private  val newsRepository: NewsRepository
 ) : ViewModel() {
 
-    val responseData:MutableLiveData<NewsModel> = MutableLiveData()
-
-    fun getWorldWideNews(){
-        viewModelScope.launch(Dispatchers.IO) {
-            val response :Response<NewsModel> = try{
-                newsRepository.getWorldWideHeadlines()
-            }
-            catch (e:Exception){
-                // error occured
-                return@launch
-            }
-            if(response.isSuccessful && response.body()!=null){
-                responseData.value= response.body()
-            }
+    val breakingResponseData:MutableLiveData<Resource<NewsModel>> = MutableLiveData()
+    val searchResponseData :MutableLiveData<Resource<NewsModel>> = MutableLiveData()
+    var breakingNewsPage = 1
+    var searchNewsPage =1
 
 
-        }
+    fun getWorldWideNews() = viewModelScope.launch{
+            breakingResponseData.value = Resource.Loading()
+            val response= newsRepository.getWorldWideHeadlines()
+            breakingResponseData.value = handleBreakingNewsResponse(response)
     }
 
-    fun getIndianHeadlines(){
-        viewModelScope.launch(Dispatchers.IO){
-            val response = try{
-                newsRepository.getIndianHeadlines()
-            }
-            catch(e:Exception){
-                //error occurred
-                return@launch
-            }
-
-            if(response.isSuccessful&& response.body()!=null){
-                responseData.value= response.body()
-            }
-        }
+    fun getIndianHeadlines() = viewModelScope.launch {
+        breakingResponseData.postValue(Resource.Loading())
+        val response= newsRepository.getIndianHeadlines()
+        breakingResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
-    fun searchSortByPopularity(query:String){
-        viewModelScope.launch(Dispatchers.IO){
-            val response = try{
-                newsRepository.searchSortByPopularity(query)
-            }
-            catch (e:Exception){
-                //error occurred
-                return@launch
-            }
 
-            if(response.isSuccessful&& response.body()!=null){
-                responseData.value = response.body()
-            }
-        }
+    fun searchSortByPopularity(query:String) = viewModelScope.launch {
+        breakingResponseData.postValue(Resource.Loading())
+        val response = newsRepository.searchSortByPopularity(query)
+        breakingResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
-    fun searchSortByRelevancy(query:String){
-        viewModelScope.launch(Dispatchers.IO){
-            val response = try{
-                newsRepository.searchSortByRelevancy(query)
-            }
-            catch (e:Exception){
-                //error occurred
-                return@launch
-            }
 
-            if(response.isSuccessful&& response.body()!=null){
-                responseData.value = response.body()
-            }
-        }
+    fun searchSortByNewest(query:String) = viewModelScope.launch {
+        breakingResponseData.postValue(Resource.Loading())
+        val response = newsRepository.searchSortByNewest(query)
+        breakingResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
-    fun searchSortByNewest(query:String){
-        viewModelScope.launch(Dispatchers.IO){
-            val response = try{
-                newsRepository.searchSortByNewest(query)
-            }
-            catch (e:Exception){
-                //error occurred
-                return@launch
-            }
+    fun searchSortByRelevancy(query:String) = viewModelScope.launch {
+        breakingResponseData.postValue(Resource.Loading())
+        val response = newsRepository.searchSortByRelevancy(query)
+        breakingResponseData.postValue(handleBreakingNewsResponse(response))
+    }
 
-            if(response.isSuccessful&& response.body()!=null){
-                responseData.value = response.body()
+
+    private fun handleBreakingNewsResponse(response: Response<NewsModel>):Resource<NewsModel>{
+        if(response.isSuccessful){
+            response.body()?.let {
+                return Resource.Success(it)
             }
         }
+        return Resource.Error(response.message())
     }
+
 
 
 }

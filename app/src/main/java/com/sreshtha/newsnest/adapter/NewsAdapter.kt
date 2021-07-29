@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.sreshtha.newsnest.databinding.ItemArticlePreviewBinding
 import com.sreshtha.newsnest.model.Article
 
-class BreakingNewsAdapter : RecyclerView.Adapter<BreakingNewsAdapter.BreakingNewsViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
 
     inner class BreakingNewsViewHolder(val binding:ItemArticlePreviewBinding):RecyclerView.ViewHolder(binding.root)
 
@@ -24,6 +24,7 @@ class BreakingNewsAdapter : RecyclerView.Adapter<BreakingNewsAdapter.BreakingNew
     }
 
     val differ = AsyncListDiffer(this,diffCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
         return BreakingNewsViewHolder(
             ItemArticlePreviewBinding.inflate(
