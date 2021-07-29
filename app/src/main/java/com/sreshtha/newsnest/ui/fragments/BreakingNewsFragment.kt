@@ -89,7 +89,7 @@ class BreakingNewsFragment : Fragment() {
 
 
         //initially displaying worldwide news
-        viewModel.getIndianHeadlines()
+        viewModel.getWorldWideNews()
 
     }
 

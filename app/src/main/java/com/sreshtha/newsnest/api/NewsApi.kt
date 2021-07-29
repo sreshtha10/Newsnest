@@ -12,7 +12,8 @@ interface NewsApi {
     @GET("v2/top-headlines")
     suspend fun getWorldWideHeadlines(
         @Query("page") page:Int = 1,
-        @Query("apiKey") apiKey: String = Constants.API_KEY
+        @Query("apiKey") apiKey: String = Constants.API_KEY,
+        @Query("category") category: String = "general"
     ):Response<NewsModel>
 
     @GET("v2/top-headlines")

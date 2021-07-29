@@ -7,4 +7,13 @@
         <item>Global</item>
         <item>India</item>
     </array>
+    <array name="categories">
+        <item>General</item>
+        <item>Business</item>
+        <item>Entertainment</item>
+        <item>Health</item>
+        <item>Science</item>
+        <item>Sports</item>
+        <item>Technology</item>
+    </array>
 </resources>
