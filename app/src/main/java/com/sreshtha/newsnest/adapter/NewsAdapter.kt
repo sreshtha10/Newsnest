@@ -37,7 +37,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
 
     override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
         holder.binding.apply {
-            tvDate.text = differ.currentList[position].publishedAt
+            //tvDate.text = differ.currentList[position].publishedAt
             tvTitle.text = differ.currentList[position].title
             tvDescription.text = differ.currentList[position].description
             val imageUrl = differ.currentList[position].urlToImage
