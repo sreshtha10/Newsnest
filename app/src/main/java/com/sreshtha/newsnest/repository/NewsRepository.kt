@@ -7,12 +7,12 @@ import retrofit2.Response
 
 class NewsRepository {
 
-    suspend fun getWorldWideHeadlines():Response<NewsModel>{
-        return RetrofitInstance.api.getWorldWideHeadlines()
+    suspend fun getWorldWideHeadlines(category: String):Response<NewsModel>{
+        return RetrofitInstance.api.getWorldWideHeadlines(category = category)
     }
 
-    suspend fun getIndianHeadlines():Response<NewsModel>{
-        return RetrofitInstance.api.getIndianHeadlines()
+    suspend fun getIndianHeadlines(category: String):Response<NewsModel>{
+        return RetrofitInstance.api.getIndianHeadlines(category=category)
     }
 
     suspend fun searchSortByPopularity(query:String):Response<NewsModel>{

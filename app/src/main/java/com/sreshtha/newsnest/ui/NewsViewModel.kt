@@ -19,15 +19,15 @@ class NewsViewModel(
     var searchNewsPage =1
 
 
-    fun getWorldWideNews() = viewModelScope.launch{
+    fun getWorldWideNews(category:String) = viewModelScope.launch{
             breakingResponseData.value = Resource.Loading()
-            val response= newsRepository.getWorldWideHeadlines()
+            val response= newsRepository.getWorldWideHeadlines(category=category)
             breakingResponseData.value = handleBreakingNewsResponse(response)
     }
 
-    fun getIndianHeadlines() = viewModelScope.launch {
+    fun getIndianHeadlines(category: String) = viewModelScope.launch {
         breakingResponseData.postValue(Resource.Loading())
-        val response= newsRepository.getIndianHeadlines()
+        val response= newsRepository.getIndianHeadlines(category=category)
         breakingResponseData.postValue(handleBreakingNewsResponse(response))
     }
 

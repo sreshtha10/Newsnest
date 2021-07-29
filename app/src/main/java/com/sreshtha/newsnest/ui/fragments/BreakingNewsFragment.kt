@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sreshtha.newsnest.adapter.NewsAdapter
@@ -61,35 +60,19 @@ class BreakingNewsFragment : Fragment() {
 
         })
 
-
-
-
-
-        binding?.breakingNewsSpinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{ override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (parent != null) {
-                    if(parent.getItemAtPosition(position) == "India"){
-                            viewModel.getIndianHeadlines()
-                    }
-                    else if(parent.getItemAtPosition(position) == "Global"){
-                        viewModel.getWorldWideNews()
-                    }
-                }
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
+        binding?.btnSearch?.setOnClickListener {
+            val category = binding?.categorySpinner?.selectedItem.toString().lowercase()
+            when(binding?.breakingNewsSpinner?.selectedItem.toString().lowercase()){
+                "global" -> viewModel.getWorldWideNews(category=category)
+                "india" -> viewModel.getIndianHeadlines(category=category)
             }
         }
 
 
-        //initially displaying worldwide news
-        viewModel.getWorldWideNews()
+
+
+        //initially displaying worldwide news (general)
+        viewModel.getWorldWideNews("general")
 
     }
 

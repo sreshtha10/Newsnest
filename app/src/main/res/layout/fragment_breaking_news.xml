@@ -11,25 +11,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:fontFamily="@font/altheading"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/altheading"
         android:text="Region"
-        android:textSize="16sp"
         android:textColor="?colorOnSecondary"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/label_category"
         android:layout_width="wrap_content"
-        android:textSize="16sp"
-        android:fontFamily="@font/altheading"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/altheading"
         android:text="Category"
         android:textColor="?colorOnSecondary"
-        app:layout_constraintEnd_toStartOf="@+id/breaking_news_pb"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
         app:layout_constraintStart_toEndOf="@+id/label_region"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,21 +50,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:entries="@array/categories"
-        app:layout_constraintEnd_toStartOf="@+id/breaking_news_pb"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
         app:layout_constraintStart_toEndOf="@+id/breaking_news_spinner"
         app:layout_constraintTop_toBottomOf="@+id/label_category" />
 
     <ProgressBar
         android:id="@+id/breaking_news_pb"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_width="77dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="4dp"
         android:indeterminate="true"
-        app:layout_constraintBottom_toTopOf="@+id/breaking_news_rv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_spinner" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/breaking_news_rv"
@@ -72,13 +71,25 @@
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/breaking_news_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/breaking_news_pb" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/ic_search_news"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
