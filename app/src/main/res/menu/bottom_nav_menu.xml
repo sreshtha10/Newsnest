@@ -7,18 +7,21 @@
         app:showAsAction="always"
         android:title="@string/breakingnews"
         android:icon="@drawable/ic_breaking_news"
+        android:iconTint="?colorAccent"
         />
 
     <item
         android:id="@+id/searchNewsFragment"
         android:title="@string/searchnews"
         app:showAsAction="always"
+        android:iconTint="?colorAccent"
         android:icon="@drawable/ic_search_news"
         />
 
     <item
         android:id="@+id/savedNewsFragment"
         app:showAsAction="always"
+        android:iconTint="?colorAccent"
         android:title="@string/savednews"
         android:icon="@drawable/ic_saved_news"
         />

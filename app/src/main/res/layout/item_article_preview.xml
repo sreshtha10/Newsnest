@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="32dp">
+    android:paddingBottom="10dp"
+    android:layout_marginBottom="32dp">
 
 
     <ImageView
@@ -20,12 +21,11 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:textColor="?colorOnSecondary"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/heading"
         android:gravity="start"
-        android:text="Sample Title"
+        android:textColor="?colorOnSecondary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,15 +34,26 @@
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
-        android:textColor="?colorOnSecondary"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/regular"
-        android:text="Expanding on the technology they use to power their cars, Tesla is making batteries that can power a community. The Megapack is a massive energy storage system that's intended for large-scale commercial and utility use. Made up of connectable containers,..."
+        android:textColor="?colorOnSecondary"
         android:textSize="18sp"
         android:textStyle="normal"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#42A5F5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
