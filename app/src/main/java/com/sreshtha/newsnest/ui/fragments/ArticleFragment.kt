@@ -1,6 +1,7 @@
 package com.sreshtha.newsnest.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,10 +35,16 @@ class ArticleFragment : Fragment() {
 
         val article = args.article
 
-        binding?.webView?.apply {
-            webViewClient = WebViewClient()
-            loadUrl(article.url)
+        try{
+            binding?.webView?.apply {
+                webViewClient = WebViewClient()
+                loadUrl(article.url)
+            }
         }
+        catch (e:Exception){
+            Log.d("TAG","Article cannot be opened")
+        }
+
     }
 
     override fun onDestroy() {

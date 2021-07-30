@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -26,13 +27,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
     val differ = AsyncListDiffer(this,diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
-        return BreakingNewsViewHolder(
-            ItemArticlePreviewBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+
+        val holder = ItemArticlePreviewBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+
+        return BreakingNewsViewHolder(holder)
     }
 
     override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
@@ -44,10 +46,21 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
             Glide.with(holder.itemView)
                 .load(imageUrl)
                 .into(ivImage)
-            setOnItemClickListener {
-                onItemClickListener?.let{ it(differ.currentList[position])  }
-            }
         }
+
+
+        holder.binding.root.setOnClickListener {
+            try{
+                onItemClickListener?.let { it(differ.currentList[position]) }
+            }
+            catch (e:Exception){
+                Log.d("TAG","Article cannot be opened")
+                //show snackbar
+            }
+
+        }
+
+
     }
 
     override fun getItemCount(): Int {
