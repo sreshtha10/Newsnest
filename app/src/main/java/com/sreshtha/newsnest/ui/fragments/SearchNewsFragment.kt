@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentSearchNewsBinding
 import com.sreshtha.newsnest.model.NewsModel
@@ -41,6 +43,16 @@ class SearchNewsFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
 
         setUpRecyclerView()
+
+        adapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article",it)
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
 
         viewModel.searchResponseData.observe(viewLifecycleOwner, { it ->
             when (it) {

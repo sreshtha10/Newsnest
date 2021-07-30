@@ -44,11 +44,21 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
             Glide.with(holder.itemView)
                 .load(imageUrl)
                 .into(ivImage)
+            setOnItemClickListener {
+                onItemClickListener?.let{ it(differ.currentList[position])  }
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+
+    private var onItemClickListener:((Article)->Unit)? =null
+
+    fun setOnItemClickListener(listener:(Article)->Unit){
+        onItemClickListener= listener
     }
 
 
