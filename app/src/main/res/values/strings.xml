@@ -16,4 +16,9 @@
         <item>Sports</item>
         <item>Technology</item>
     </array>
+    <array name="sortBy">
+        <item>Newest</item>
+        <item>Popularity</item>
+        <item>Relevancy</item>
+    </array>
 </resources>

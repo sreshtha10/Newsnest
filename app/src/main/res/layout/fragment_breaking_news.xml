@@ -8,6 +8,7 @@
 
     <TextView
         android:id="@+id/label_region"
+        android:padding="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:padding="4dp"
         android:id="@+id/label_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

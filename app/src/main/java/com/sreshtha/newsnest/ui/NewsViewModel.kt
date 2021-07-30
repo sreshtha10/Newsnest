@@ -33,22 +33,22 @@ class NewsViewModel(
 
 
     fun searchSortByPopularity(query:String) = viewModelScope.launch {
-        breakingResponseData.postValue(Resource.Loading())
+        searchResponseData.postValue(Resource.Loading())
         val response = newsRepository.searchSortByPopularity(query)
-        breakingResponseData.postValue(handleBreakingNewsResponse(response))
+        searchResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
 
     fun searchSortByNewest(query:String) = viewModelScope.launch {
-        breakingResponseData.postValue(Resource.Loading())
+        searchResponseData.postValue(Resource.Loading())
         val response = newsRepository.searchSortByNewest(query)
-        breakingResponseData.postValue(handleBreakingNewsResponse(response))
+        searchResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
     fun searchSortByRelevancy(query:String) = viewModelScope.launch {
-        breakingResponseData.postValue(Resource.Loading())
+        searchResponseData.postValue(Resource.Loading())
         val response = newsRepository.searchSortByRelevancy(query)
-        breakingResponseData.postValue(handleBreakingNewsResponse(response))
+        searchResponseData.postValue(handleBreakingNewsResponse(response))
     }
 
 
