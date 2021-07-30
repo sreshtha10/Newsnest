@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,23 +66,6 @@ class SearchNewsFragment : Fragment() {
 
         var job:Job?=null
 
-
-        /*binding?.searchViewNews?.setOnSearchClickListener {
-            //job?.cancel()
-            //job = MainScope().launch {
-                //delay(1000L)
-                val query = binding?.searchViewNews?.query.toString()
-                Log.d("TAG",query)
-                when (binding?.spinnerSort?.selectedItem.toString().lowercase()) {
-                    "newest" -> viewModel.searchSortByNewest(query)
-                    "popularity" -> viewModel.searchSortByPopularity(query)
-                    "relevancy" -> viewModel.searchSortByRelevancy(query)
-                }
-            //}
-
-        }*/
-
-
         binding?.searchViewNews?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -110,6 +94,30 @@ class SearchNewsFragment : Fragment() {
         })
 
         binding?.searchViewNews?.isSubmitButtonEnabled=false
+
+
+        binding?.spinnerSort?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val query = binding?.searchViewNews?.query.toString()
+                if(query.isEmpty()){
+                    return
+                }
+                when(parent?.getItemAtPosition(position).toString().lowercase()){
+                    "newest" -> viewModel.searchSortByNewest(query)
+                    "popularity" -> viewModel.searchSortByPopularity(query)
+                    "relevancy" -> viewModel.searchSortByRelevancy(query)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
 
 
 
