@@ -1,4 +1,4 @@
-package com.sreshtha.newsnest.ui
+package com.sreshtha.newsnest.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

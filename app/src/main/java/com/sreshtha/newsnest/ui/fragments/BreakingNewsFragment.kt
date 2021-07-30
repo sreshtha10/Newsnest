@@ -12,14 +12,14 @@ import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentBreakingNewsBinding
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
-import com.sreshtha.newsnest.ui.NewsViewModel
+import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
 
 
 class BreakingNewsFragment : Fragment() {
 
     private var binding:FragmentBreakingNewsBinding? = null
-    private lateinit var viewModel :NewsViewModel
+    private lateinit var viewModel : NewsViewModel
     private lateinit var adapter:NewsAdapter
 
     override fun onCreateView(

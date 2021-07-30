@@ -13,7 +13,7 @@ import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentSearchNewsBinding
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
-import com.sreshtha.newsnest.ui.NewsViewModel
+import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
