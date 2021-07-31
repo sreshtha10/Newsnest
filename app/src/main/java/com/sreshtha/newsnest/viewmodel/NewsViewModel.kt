@@ -3,6 +3,7 @@ package com.sreshtha.newsnest.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.utils.Resource
@@ -61,6 +62,15 @@ class NewsViewModel(
         return Resource.Error(response.message())
     }
 
+    fun insert(article: Article) = viewModelScope.launch {
+        newsRepository.insert(article)
+    }
+
+    fun delete(article: Article) = viewModelScope.launch {
+        newsRepository.delete(article)
+    }
+
+    fun getAllSavedArticles() = newsRepository.getAllSavedArticles()
 
 
 }

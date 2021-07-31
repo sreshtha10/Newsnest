@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sreshtha.newsnest.R
+import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val newsRepository = NewsRepository()
+        val database = ArticleDatabase.getDatabase(this)
+        val newsRepository = NewsRepository(database)
         val viewModelFactory = NewsViewModelFactory(newsRepository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(NewsViewModel::class.java)
 
