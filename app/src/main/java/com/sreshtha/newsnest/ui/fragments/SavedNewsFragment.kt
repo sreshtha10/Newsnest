@@ -85,7 +85,7 @@ class SavedNewsFragment : Fragment() {
             private val background = ColorDrawable()
             private val intrinsicHeight = delIcon?.intrinsicHeight
             private val intrinsicWidth = delIcon?.intrinsicWidth
-            private val backgroundColor = Color.parseColor("#f44336")
+            private val backgroundColor = Color.parseColor("#4e4f52")
             private val clearPaint = Paint().apply {
                 xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             }

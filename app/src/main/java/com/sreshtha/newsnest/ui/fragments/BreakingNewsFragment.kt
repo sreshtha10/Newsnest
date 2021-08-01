@@ -18,6 +18,7 @@ import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
 
 
+
 class BreakingNewsFragment : Fragment() {
 
     private var binding:FragmentBreakingNewsBinding? = null

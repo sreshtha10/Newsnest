@@ -4,6 +4,8 @@
     <string name="searchnews">Search News</string>
     <string name="savednews">Saved News</string>
     <string name="floating_action_button">Floating Action Button</string>
+    <string name="region">Region</string>
+    <string name="category">Category</string>
     <array name="BreakingNewsSpinnerArr">
         <item>Global</item>
         <item>India</item>
