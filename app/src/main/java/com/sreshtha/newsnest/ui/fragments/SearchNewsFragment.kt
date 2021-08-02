@@ -5,16 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentSearchNewsBinding
+import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
+import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
 import kotlinx.coroutines.Job
@@ -26,6 +30,11 @@ class SearchNewsFragment : Fragment() {
     private var binding: FragmentSearchNewsBinding? = null
     private lateinit var viewModel: NewsViewModel
     private lateinit var adapter: NewsAdapter
+    private var isLoading = false
+    private var isScrolling = false
+    private var isLastPage = false
+    private var currSorting:String = "newest"
+    private var currQuery:String=""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +68,11 @@ class SearchNewsFragment : Fragment() {
                 is Resource.Success<NewsModel> -> {
                     hideProgressBar()
                     it.data?.let {
-                        adapter.differ.submitList(it.articles)
+                        val newList : List<Article> = it.articles.toList()
+                        adapter.differ.submitList(newList)
+                        val totalPages = it.totalResults/Constants.PAGE_SIZE +2
+                        isLastPage = viewModel.searchNewsPage == totalPages
+
                     }
                     Log.d("TAG", it.data.toString())
                 }
@@ -92,10 +105,20 @@ class SearchNewsFragment : Fragment() {
                 job?.cancel()
                 job = MainScope().launch {
                     delay(1000L)
+                    currQuery = newText
+                    viewModel.totalSearchNewsData = null
+                    viewModel.searchNewsPage = 1
                     when (binding?.spinnerSort?.selectedItem.toString().lowercase()) {
-                        "newest" -> viewModel.searchSortByNewest(newText)
-                        "popularity" -> viewModel.searchSortByPopularity(newText)
-                        "relevancy" -> viewModel.searchSortByRelevancy(newText)
+                        "newest" -> {
+                            viewModel.searchSortByNewest(newText)
+                        }
+                        "popularity" -> {
+                            viewModel.searchSortByPopularity(newText)
+
+                        }
+                        "relevancy" ->{
+                            viewModel.searchSortByRelevancy(newText)
+                        }
                     }
 
                 }
@@ -119,10 +142,22 @@ class SearchNewsFragment : Fragment() {
                 if(query.isEmpty()){
                     return
                 }
+                currQuery = query
+                viewModel.totalSearchNewsData = null
+                viewModel.searchNewsPage = 1
                 when(parent?.getItemAtPosition(position).toString().lowercase()){
-                    "newest" -> viewModel.searchSortByNewest(query)
-                    "popularity" -> viewModel.searchSortByPopularity(query)
-                    "relevancy" -> viewModel.searchSortByRelevancy(query)
+                    "newest" -> {
+                        viewModel.searchSortByNewest(query)
+                        currSorting = "newest"
+                    }
+                    "popularity" -> {
+                        viewModel.searchSortByPopularity(query)
+                        currSorting = "popularity"
+                    }
+                    "relevancy" -> {
+                        viewModel.searchSortByRelevancy(query)
+                        currSorting = "relevancy"
+                    }
                 }
             }
 
@@ -145,16 +180,64 @@ class SearchNewsFragment : Fragment() {
         adapter = NewsAdapter()
         binding?.searchNewsRv?.adapter = adapter
         binding?.searchNewsRv?.layoutManager = LinearLayoutManager(activity)
+        binding?.searchNewsRv?.addOnScrollListener(customScrollListener)
 
     }
 
 
     private fun hideProgressBar() {
         binding?.searchPb?.visibility = View.INVISIBLE
+        isLoading = false
     }
 
     private fun showProgressBar() {
         binding?.searchPb?.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+
+
+
+    private val customScrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+                Log.d("TAG","Scrolling")
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
+
+            if(!isLoading && !isLastPage){
+                if(visibleItemCount+firstVisibleItemCount>=totalItemCount &&firstVisibleItemCount>=0 && totalItemCount>= Constants.PAGE_SIZE){
+                    // load current function
+                    when(currSorting){
+                        "newest" ->{
+                            viewModel.searchSortByNewest(query = currQuery)
+                            Log.d("TAG","Last")
+                        }
+                        "popularity" ->{
+                            viewModel.searchSortByPopularity(query = currQuery)
+                            Log.d("TAG","Last")
+                        }
+
+                        "relevancy" ->{
+                            viewModel.searchSortByRelevancy(query = currQuery)
+                        }
+
+                    }
+                    isScrolling = false
+                }
+            }
+        }
     }
 
 }

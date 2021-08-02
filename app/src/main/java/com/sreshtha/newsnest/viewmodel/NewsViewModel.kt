@@ -75,9 +75,9 @@ class NewsViewModel(
 
     private fun handleSearchNewsResponse(response: Response<NewsModel>):Resource<NewsModel>{
         if(response.isSuccessful){
-            //searchNewsPage++
+            searchNewsPage++
             response.body()?.let {
-                /*if(totalSearchNewsData == null){
+                if(totalSearchNewsData == null){
                         totalSearchNewsData= it
                 }
                 else{
@@ -85,9 +85,9 @@ class NewsViewModel(
                     val prevResponse = totalSearchNewsData?.articles
                     val newArticles = it.articles
                     prevResponse?.addAll(newArticles)
-                }*/
+                }
 
-                return Resource.Success(it)
+                return Resource.Success(totalSearchNewsData?:it)
             }
         }
         return Resource.Error(response.message())
