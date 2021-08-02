@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.Newsnest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1E88E5</item>
-        <item name="colorPrimaryVariant">#053785</item>
+        <item name="colorPrimary">#2BAE66</item>
+        <item name="colorPrimaryVariant">#069A49</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondaryVariant">@color/grey</item> <!--color for hr-->
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorAccent">#4FC3F7</item>
         <!-- Status bar color. -->
@@ -18,7 +18,7 @@
 
     <!-- Bottom Navigation -->
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">@font/altheading</item>
+        <item name="fontFamily">@font/regular</item>
         <item name="android:textSize">9sp</item>
         <item name="android:textStyle">bold</item>
     </style>

@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondaryVariant">#D31E42</item>  <!--color for hr-->
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/black</item>
@@ -17,11 +17,9 @@
 
     <!-- Bottom Navigation -->
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">@font/altheading</item>
+        <item name="fontFamily">@font/regular</item>
         <item name="android:textSize">9sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?colorPrimaryVariant</item>
-        <item name="hintTextColor">?colorPrimaryVariant</item>
     </style>
 
 </resources>

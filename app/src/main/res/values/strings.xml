@@ -6,6 +6,7 @@
     <string name="floating_action_button">Floating Action Button</string>
     <string name="region">Region</string>
     <string name="category">Category</string>
+    <string name="settings">Settings</string>
     <array name="BreakingNewsSpinnerArr">
         <item>Global</item>
         <item>India</item>

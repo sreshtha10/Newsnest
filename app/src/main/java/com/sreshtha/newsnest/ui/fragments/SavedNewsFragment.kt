@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
@@ -85,7 +86,7 @@ class SavedNewsFragment : Fragment() {
             private val background = ColorDrawable()
             private val intrinsicHeight = delIcon?.intrinsicHeight
             private val intrinsicWidth = delIcon?.intrinsicWidth
-            private val backgroundColor = Color.parseColor("#4e4f52")
+            private val backgroundColor = MaterialColors.getColor(mView,R.attr.colorPrimary)
             private val clearPaint = Paint().apply {
                 xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             }
@@ -129,9 +130,8 @@ class SavedNewsFragment : Fragment() {
 
                 // Calculate position of delete icon
                 val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
-                val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
-                val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth!!
-                val deleteIconRight = itemView.right - deleteIconMargin
+                val deleteIconLeft = itemView.right- (2*intrinsicWidth!!)
+                val deleteIconRight = itemView.right - intrinsicWidth
                 val deleteIconBottom = deleteIconTop + intrinsicHeight
 
                 // Draw the delete icon
