@@ -10,24 +10,24 @@ import retrofit2.Response
 
 class NewsRepository(private val database:ArticleDatabase){
 
-    suspend fun getWorldWideHeadlines(category: String):Response<NewsModel>{
-        return RetrofitInstance.api.getWorldWideHeadlines(category = category)
+    suspend fun getWorldWideHeadlines(category: String,page:Int):Response<NewsModel>{
+        return RetrofitInstance.api.getWorldWideHeadlines(category = category,page = page)
     }
 
-    suspend fun getIndianHeadlines(category: String):Response<NewsModel>{
-        return RetrofitInstance.api.getIndianHeadlines(category=category)
+    suspend fun getIndianHeadlines(category: String,page:Int):Response<NewsModel>{
+        return RetrofitInstance.api.getIndianHeadlines(category=category,page = page)
     }
 
-    suspend fun searchSortByPopularity(query:String):Response<NewsModel>{
-        return RetrofitInstance.api.searchSortByNewest(query = query)
+    suspend fun searchSortByPopularity(query:String,page:Int):Response<NewsModel>{
+        return RetrofitInstance.api.searchSortByNewest(query = query,page = page)
     }
 
-    suspend fun searchSortByNewest(query: String):Response<NewsModel>{
-        return RetrofitInstance.api.searchSortByNewest(query = query)
+    suspend fun searchSortByNewest(query: String,page:Int):Response<NewsModel>{
+        return RetrofitInstance.api.searchSortByNewest(query = query,page = page)
     }
 
-    suspend fun searchSortByRelevancy(query: String):Response<NewsModel>{
-        return RetrofitInstance.api.searchSortByRelevancy(query=query)
+    suspend fun searchSortByRelevancy(query: String,page:Int):Response<NewsModel>{
+        return RetrofitInstance.api.searchSortByRelevancy(query=query,page = page)
     }
 
     suspend fun insert(article: Article) = database.getArticleDao().insert(article)
