@@ -24,15 +24,19 @@ class MainActivity : AppCompatActivity() {
         val database = ArticleDatabase.getDatabase(this)
         val newsRepository = NewsRepository(database)
         val viewModelFactory = NewsViewModelFactory(newsRepository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(NewsViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
-        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
 
 
     }
+
+
 }
+
