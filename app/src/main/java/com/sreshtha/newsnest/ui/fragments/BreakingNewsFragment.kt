@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,31 +86,66 @@ class BreakingNewsFragment : Fragment() {
 
         })
 
-        binding?.btnSearch?.setOnClickListener {
-            val category = binding?.categorySpinner?.selectedItem.toString().lowercase()
-            viewModel.breakingNewsPage = 1
-            viewModel.totalBreakingNewsData = null
-            when(binding?.breakingNewsSpinner?.selectedItem.toString().lowercase()){
-                "global" -> {
-                    viewModel.getWorldWideNews(category=category)
-                    currCategory = category
-                    currRegion = "global"
-                }
-                "india" -> {
-                    viewModel.getIndianHeadlines(category=category)
-                    currCategory =category
-                    currRegion = "india"
-                }
-            }
-        }
-
-
-
 
         //initially displaying worldwide news (general)
         viewModel.getWorldWideNews("general")
 
+
+
+
+        binding?.categorySpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val category = parent?.getItemAtPosition(position).toString().lowercase()
+                currCategory = category
+                val region = binding?.breakingNewsSpinner?.selectedItem.toString().lowercase()
+                currRegion = region
+                viewModel.breakingNewsPage = 1
+                viewModel.totalBreakingNewsData = null
+                when(region){
+                    "global" -> viewModel.getWorldWideNews(category=category)
+                    "india" -> viewModel.getIndianHeadlines(category=category)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+
+        binding?.breakingNewsSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val region = parent?.getItemAtPosition(position).toString().lowercase()
+                currRegion = region
+                val category = binding?.categorySpinner?.selectedItem.toString().lowercase()
+                currCategory = category
+                viewModel.breakingNewsPage = 1
+                viewModel.totalBreakingNewsData = null
+                when(region){
+                    "global" -> viewModel.getWorldWideNews(category=category)
+                    "india" -> viewModel.getIndianHeadlines(category=category)
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
     }
+
+
 
 
     override fun onDestroy() {
