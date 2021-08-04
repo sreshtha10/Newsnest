@@ -62,7 +62,7 @@ ___
 
 ## Compatibilty 
 
-* Android (API level 16) and higher
+* Android (API level 16) and higher)
 
 ___
 
@@ -71,3 +71,4 @@ ___
 
 * Newsnest is licensed under the MIT License. See [LICENSE](https://github.com/sreshtha10/Newsnest/blob/master/LICENSE) for the full license text.
 
+### Credit - [Philipp Lackner](https://github.com/philipplackner)
