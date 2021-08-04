@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentBreakingNewsBinding
@@ -78,8 +79,10 @@ class BreakingNewsFragment : Fragment() {
                 }
                 is Resource.Error<NewsModel> ->{
                     hideProgressBar()
-                    it.message?.let { it1 -> Log.d("TAG", it1) }
-                        // display snackbar showing error message
+                    it.message?.let { it1 ->
+                        Log.d("TAG", it1)
+                        Snackbar.make(view, it1, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
                 is Resource.Loading<NewsModel> ->{
                         showProgressBar()

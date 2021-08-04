@@ -23,9 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         val database = ArticleDatabase.getDatabase(this)
         val newsRepository = NewsRepository(database)
-        val viewModelFactory = NewsViewModelFactory(newsRepository)
+        val viewModelFactory = NewsViewModelFactory(application,newsRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
