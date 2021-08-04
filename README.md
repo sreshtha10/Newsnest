@@ -3,7 +3,7 @@
 
 ## About
 
-* Android app for reading news.
+* News app for Android.
 ___
 
 ## Features
