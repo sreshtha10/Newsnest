@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -52,6 +53,8 @@ class SearchNewsFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
 
         setUpRecyclerView()
+
+        setUpSpinner()
 
         adapter.setOnItemClickListener {
             val bundle = Bundle().apply {
@@ -238,6 +241,13 @@ class SearchNewsFragment : Fragment() {
                 }
             }
         }
+    }
+
+
+    private fun setUpSpinner(){
+        val arr = resources.getStringArray(R.array.sortBy)
+        val sortAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,arr) }
+        binding?.spinnerSort?.adapter = sortAdapter
     }
 
 }

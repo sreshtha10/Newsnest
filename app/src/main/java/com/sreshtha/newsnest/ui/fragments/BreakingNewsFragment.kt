@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,7 @@ class BreakingNewsFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
 
         setUpRecyclerView()
+        setUpSpinners()
 
         adapter.setOnItemClickListener {
             val bundle = Bundle().apply {
@@ -209,6 +211,17 @@ class BreakingNewsFragment : Fragment() {
                 }
             }
         }
+    }
+
+
+    private fun setUpSpinners(){
+        val regionArr = resources.getStringArray(R.array.BreakingNewsSpinnerArr)
+        val regionAdapter = activity?.let{ArrayAdapter(it,R.layout.custom_spinner,regionArr)}
+        binding?.breakingNewsSpinner?.adapter = regionAdapter
+
+        val categoryArr = resources.getStringArray(R.array.categories)
+        val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
+        binding?.categorySpinner?.adapter = categoryAdapter
     }
 
 }
