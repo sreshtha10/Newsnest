@@ -69,6 +69,6 @@ ___
 
 ## Licensing
 
-* Newsnest is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/sreshtha10/Newsnest/blob/master/LICENSE) for the full license text.
+* Newsnest is licensed under the MIT License. See [LICENSE](https://github.com/sreshtha10/Newsnest/blob/master/LICENSE) for the full license text.
 
 
