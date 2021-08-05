@@ -49,4 +49,8 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.sreshtha.newsnest.ui.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

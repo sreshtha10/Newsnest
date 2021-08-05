@@ -44,9 +44,20 @@ class SavedNewsFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
 
+        if(adapter.differ.currentList.isEmpty()){
+            binding?.emptyView?.visibility = View.VISIBLE
+        }
+
         viewModel.getAllSavedArticles().observe(viewLifecycleOwner,{
             if(it != null){
-                adapter.differ.submitList(it)
+                if(it.isEmpty()){
+                    binding?.emptyView?.visibility = View.VISIBLE
+                }
+                else{
+                    binding?.emptyView?.visibility = View.INVISIBLE
+                    adapter.differ.submitList(it)
+                }
+
             }
 
         })
@@ -186,7 +197,7 @@ class SavedNewsFragment : Fragment() {
             }
             show()
         }
-
         viewModel.getAllSavedArticles()
+
     }
 }

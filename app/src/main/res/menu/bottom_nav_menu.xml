@@ -26,13 +26,11 @@
         android:icon="@drawable/ic_saved_news"
         />
 
-    <!--
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:iconTint="?colorAccent"
         android:title="@string/settings"
         app:showAsAction="always"
         />
-        -->
 </menu>

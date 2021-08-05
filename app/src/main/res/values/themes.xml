@@ -9,7 +9,7 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/grey</item> <!--color for hr-->
         <item name="colorOnSecondary">@color/black</item>
-        <item name="colorAccent">#4FC3F7</item>
+        <item name="colorAccent">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/black</item>
         <!-- Customize your theme here. -->

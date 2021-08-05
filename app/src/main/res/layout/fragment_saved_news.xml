@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     >
 
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="38sp"
+        android:fontFamily="@font/heading"
+        android:visibility="gone"
+        android:text="@string/no_articles_saved" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedNews_rv"
