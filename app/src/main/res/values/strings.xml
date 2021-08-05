@@ -10,6 +10,7 @@
     <string name="no_articles_saved">No Articles Saved.</string>
     <string name="dark_theme">Dark Theme</string>
     <string name="notifications">Notifications</string>
+    <string name="language">Language</string>
     <array name="BreakingNewsSpinnerArr">
         <item>Global</item>
         <item>India</item>
@@ -27,5 +28,9 @@
         <item>Newest</item>
         <item>Popularity</item>
         <item>Relevancy</item>
+    </array>
+    <array name="lang">
+        <item>English</item>
+        <item>हिन्दी</item>
     </array>
 </resources>
