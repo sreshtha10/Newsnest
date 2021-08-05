@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.sreshtha.newsnest.MyApplication
 import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
+import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.utils.Resource
 import kotlinx.coroutines.launch
@@ -183,6 +184,13 @@ class NewsViewModel(
     }
 
     fun getAllSavedArticles() = newsRepository.getAllSavedArticles()
+
+
+    fun insert_settings(settings: UserSettings) = viewModelScope.launch {
+        newsRepository.insert_settings(settings)
+    }
+
+    fun get_user_settings() = newsRepository.get_user_settings()
 
 
 

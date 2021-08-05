@@ -5,6 +5,7 @@ import com.sreshtha.newsnest.api.RetrofitInstance
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
+import com.sreshtha.newsnest.model.UserSettings
 import retrofit2.Response
 
 
@@ -36,5 +37,7 @@ class NewsRepository(private val database:ArticleDatabase){
 
     fun getAllSavedArticles() = database.getArticleDao().getAllSavedArticles()
 
+    suspend fun insert_settings(settings:UserSettings) = database.getArticleDao().insert_settings(settings=settings)
 
+    fun get_user_settings()= database.getArticleDao().get_user_settings()
 }

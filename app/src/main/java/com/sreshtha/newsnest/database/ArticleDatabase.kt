@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.sreshtha.newsnest.model.Article
+import com.sreshtha.newsnest.model.UserSettings
 
 @Database(
-    entities = [Article::class],
+    entities = [Article::class,UserSettings::class],
     version = 1
 )
 @TypeConverters(Converters::class)

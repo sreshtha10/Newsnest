@@ -3,7 +3,10 @@ package com.sreshtha.newsnest.ui
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sreshtha.newsnest.R
@@ -12,6 +15,9 @@ import com.sreshtha.newsnest.databinding.ActivityMainBinding
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,15 +25,36 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: NewsViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val database = ArticleDatabase.getDatabase(this)
         val newsRepository = NewsRepository(database)
         val viewModelFactory = NewsViewModelFactory(application,newsRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
+
+        try{
+            var theme:String?=null
+            lifecycleScope.launch(Dispatchers.IO){
+                theme = viewModel.get_user_settings().theme
+                Log.d("Settings","$theme n")
+
+                withContext(Dispatchers.Main){
+                    when(theme){
+                        "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                }
+
+            }
+
+        }
+        catch (e:Exception){
+            Log.d("Settings",e.message.toString())
+        }
 
 
         val navHost =
