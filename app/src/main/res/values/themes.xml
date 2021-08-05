@@ -3,13 +3,12 @@
     <style name="Theme.Newsnest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#2BAE66</item>
-        <item name="colorPrimaryVariant">#069A49</item>
+        <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/grey</item> <!--color for hr-->
         <item name="colorOnSecondary">@color/black</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">#069A49</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/black</item>
         <!-- Customize your theme here. -->

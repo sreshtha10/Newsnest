@@ -8,6 +8,8 @@
     <string name="category">Category</string>
     <string name="settings">Settings</string>
     <string name="no_articles_saved">No Articles Saved.</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="notifications">Notifications</string>
     <array name="BreakingNewsSpinnerArr">
         <item>Global</item>
         <item>India</item>

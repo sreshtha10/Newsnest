@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.ui
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +34,11 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
 
-
+        when(this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)){
+            Configuration.UI_MODE_NIGHT_YES->{
+                viewModel.currTheme="dark"
+            }
+        }
     }
 
 
