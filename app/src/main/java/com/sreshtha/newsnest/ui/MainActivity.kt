@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
+import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
@@ -34,12 +35,21 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+
         setContentView(binding.root)
 
         try{
             var theme:String?=null
             lifecycleScope.launch(Dispatchers.IO){
-                theme = viewModel.get_user_settings().theme
+                val userSettings = viewModel.get_user_settings()
+
+                if(userSettings==null){
+                    return@launch
+                }
+
+                theme = userSettings.theme
+                viewModel.currTheme = theme as String
+                viewModel.currLang = userSettings.lang
                 Log.d("Settings","$theme n")
 
                 withContext(Dispatchers.Main){
@@ -66,7 +76,13 @@ class MainActivity : AppCompatActivity() {
                 viewModel.currTheme="dark"
             }
         }
+
+
+
     }
+
+
+
 
 
 }

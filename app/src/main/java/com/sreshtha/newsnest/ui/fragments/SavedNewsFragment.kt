@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.ui.fragments
 
+import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -61,6 +62,7 @@ class SavedNewsFragment : Fragment() {
             }
 
         })
+
 
         viewModel.getAllSavedArticles()
         setUpSwipeToDelete()
@@ -200,4 +202,5 @@ class SavedNewsFragment : Fragment() {
         viewModel.getAllSavedArticles()
 
     }
+
 }

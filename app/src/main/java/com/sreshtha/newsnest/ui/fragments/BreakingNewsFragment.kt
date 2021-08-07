@@ -1,6 +1,5 @@
 package com.sreshtha.newsnest.ui.fragments
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -90,6 +89,9 @@ class BreakingNewsFragment : Fragment() {
             }
 
         })
+
+
+
 
 
         //initially displaying worldwide news (general)
@@ -226,5 +228,8 @@ class BreakingNewsFragment : Fragment() {
         val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
         binding?.categorySpinner?.adapter = categoryAdapter
     }
+
+
+
 
 }

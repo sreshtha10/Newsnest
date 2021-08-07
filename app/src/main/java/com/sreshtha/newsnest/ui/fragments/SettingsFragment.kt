@@ -1,10 +1,12 @@
 package com.sreshtha.newsnest.ui.fragments
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -43,11 +45,17 @@ class SettingsFragment: Fragment() {
         }
 
 
+        when(viewModel.currLang){
+            "hi" -> binding?.spLang?.setSelection(1)
+            "en" -> binding?.spLang?.setSelection(0)
+        }
+
         binding?.switchDarkTheme?.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
                 true ->{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    viewModel.insert_settings(UserSettings(1,"dark"))
+                    viewModel.currTheme = "dark"
+                    viewModel.insert_settings(UserSettings(1,"dark",viewModel.currLang!!))
                     lifecycleScope.launch(Dispatchers.IO){
                         val theme = viewModel.get_user_settings().theme
                         Log.d("Settings",theme)
@@ -55,7 +63,8 @@ class SettingsFragment: Fragment() {
                 }
                 false -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    viewModel.insert_settings(UserSettings(1,"light"))
+                    viewModel.currTheme = "light"
+                    viewModel.insert_settings(UserSettings(1,"light",viewModel.currLang!!))
                     lifecycleScope.launch(Dispatchers.IO){
                         val theme = viewModel.get_user_settings().theme
                         Log.d("Settings",theme)
@@ -64,6 +73,30 @@ class SettingsFragment: Fragment() {
 
             }
         }
+
+        binding?.spLang?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if(parent?.getItemAtPosition(position) == "English"){
+                    viewModel.currLang = "en"
+                    viewModel.insert_settings(UserSettings(1,viewModel.currTheme!!,viewModel.currLang!!))
+                }
+                else{
+                    viewModel.currLang = "hi"
+                    viewModel.insert_settings(UserSettings(1,viewModel.currTheme!!,viewModel.currLang!!))
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+
     }
 
     override fun onDestroy() {
@@ -71,6 +104,8 @@ class SettingsFragment: Fragment() {
         binding = null
 
     }
+
+
 
 
 }

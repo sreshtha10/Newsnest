@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -93,7 +94,6 @@ class SearchNewsFragment : Fragment() {
             }
 
         })
-
 
         var job:Job?=null
 
@@ -252,6 +252,9 @@ class SearchNewsFragment : Fragment() {
         val sortAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,arr) }
         binding?.spinnerSort?.adapter = sortAdapter
     }
+
+
+
 
 }
 

@@ -11,7 +11,7 @@
         android:layout_height="56dp"
         android:maxWidth="248dp"
         android:maxHeight="56dp"
-        app:queryHint="Search News"
+        app:queryHint="@string/searchnews"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"

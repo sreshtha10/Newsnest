@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">न्यूज़नेस्ट</string>
+    <string name="breakingnews">ताज़ा खबर</string>
+    <string name="searchnews">समाचार खोजें</string>
+    <string name="savednews">सहेजी गई खबर</string>
+    <string name="floating_action_button">न्यूज़नेस्ट</string>
+    <string name="region">क्षेत्र</string>
+    <string name="category">श्रेणी</string>
+    <string name="settings">सेटिंग</string>
+    <string name="no_articles_saved">आपके द्वारा कोई लेख सहेजा नहीं गया</string>
+    <string name="dark_theme">डार्क थीम</string>
+    <string name="notifications">अधिसूचना</string>
+    <string name="language">भाषा</string>
+    <array name="BreakingNewsSpinnerArr">
+        <item>विश्व समाचार</item>
+        <item>भारत</item>
+    </array>
+    <array name="categories">
+        <item>सामान्य समाचार</item>
+        <item>व्यापार</item>
+        <item>मनोरंजन</item>
+        <item>स्वास्थ्य</item>
+        <item>विज्ञान</item>
+        <item>खेल</item>
+        <item>प्रौद्योगिकी</item>
+    </array>
+    <array name="sortBy">
+        <item>नवीनतम</item>
+        <item>लोकप्रियता</item>
+        <item>प्रासंगिकता</item>
+    </array>
+    <array name="lang">
+        <item>English</item>
+        <item>हिन्दी</item>
+    </array>
+</resources>
