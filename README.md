@@ -22,6 +22,9 @@ ___
 * Internet
 * Network State
 
+## Building the Application
+Get your API Key from newspi.org and then place the value inside app/build.gradle file.
+Modify the API_KEY entry in it.
 
 ## Screenshots
 
