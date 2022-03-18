@@ -30,8 +30,6 @@ class NewsViewModel(
     var searchNewsPage =1
     var totalBreakingNewsData:NewsModel? = null
     var totalSearchNewsData:NewsModel?=null
-    var currTheme:String="light"
-    var currLang:String="en"
 
 
     fun getWorldWideNews(category:String) = viewModelScope.launch{

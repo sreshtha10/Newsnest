@@ -1,6 +1,7 @@
 package com.sreshtha.newsnest.ui.fragments
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,8 +12,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sreshtha.newsnest.databinding.FragmentSettingsBinding
-import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.ui.MainActivity
+import com.sreshtha.newsnest.utils.LocaleHelper
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ class SettingsFragment: Fragment() {
 
         viewModel = (activity as MainActivity).viewModel
 
+        /*
         when(viewModel.currTheme){
             "dark" -> {
                 binding?.switchDarkTheme?.isChecked = true
@@ -42,20 +44,17 @@ class SettingsFragment: Fragment() {
             "light" -> {
                 binding?.switchDarkTheme?.isChecked=false
             }
-        }
+        }*/
 
+        binding?.switchDarkTheme?.isChecked = this.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
-        when(viewModel.currLang){
-            "hi" -> binding?.spLang?.setSelection(1)
-            "en" -> binding?.spLang?.setSelection(0)
-        }
 
         binding?.switchDarkTheme?.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
                 true ->{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    viewModel.currTheme = "dark"
-                    viewModel.insert_settings(UserSettings(1,"dark",viewModel.currLang!!))
+                    //viewModel.currTheme = "dark"
+                    //viewModel.insert_settings(UserSettings(1,"dark",viewModel.currLang!!))
                     lifecycleScope.launch(Dispatchers.IO){
                         val theme = viewModel.get_user_settings().theme
                         Log.d("Settings",theme)
@@ -63,8 +62,8 @@ class SettingsFragment: Fragment() {
                 }
                 false -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    viewModel.currTheme = "light"
-                    viewModel.insert_settings(UserSettings(1,"light",viewModel.currLang!!))
+                    //viewModel.currTheme = "light"
+                    //viewModel.insert_settings(UserSettings(1,"light",viewModel.currLang!!))
                     lifecycleScope.launch(Dispatchers.IO){
                         val theme = viewModel.get_user_settings().theme
                         Log.d("Settings",theme)
@@ -74,6 +73,10 @@ class SettingsFragment: Fragment() {
             }
         }
 
+
+
+
+        var isInitialCall = true
         binding?.spLang?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -81,13 +84,20 @@ class SettingsFragment: Fragment() {
                 position: Int,
                 id: Long
             ) {
-                if(parent?.getItemAtPosition(position) == "English"){
-                    viewModel.currLang = "en"
-                    viewModel.insert_settings(UserSettings(1,viewModel.currTheme!!,viewModel.currLang!!))
+                Log.d("DEBUG","sp selection called")
+                if(isInitialCall){
+                    isInitialCall=false
+                    return
+                }
+                if(parent?.getItemAtPosition(position).toString() == "English"){
+                    //viewModel.insert_settings(UserSettings(1,viewModel.currTheme,viewModel.currLang))
+                    LocaleHelper.setLocale(activity,"en")
+                    (activity as MainActivity).restartActivity()
                 }
                 else{
-                    viewModel.currLang = "hi"
-                    viewModel.insert_settings(UserSettings(1,viewModel.currTheme!!,viewModel.currLang!!))
+                    //viewModel.insert_settings(UserSettings(1,viewModel.currTheme,viewModel.currLang))
+                    LocaleHelper.setLocale(activity,"hi")
+                    (activity as MainActivity).restartActivity()
                 }
             }
 
@@ -104,8 +114,5 @@ class SettingsFragment: Fragment() {
         binding = null
 
     }
-
-
-
 
 }

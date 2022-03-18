@@ -1,6 +1,6 @@
 package com.sreshtha.newsnest.ui
 
-import android.content.res.Configuration
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
-import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val database = ArticleDatabase.getDatabase(this)
         val newsRepository = NewsRepository(database)
         val viewModelFactory = NewsViewModelFactory(application,newsRepository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[NewsViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
 
 
@@ -47,10 +46,10 @@ class MainActivity : AppCompatActivity() {
                     return@launch
                 }
 
-                theme = userSettings.theme
+                /*theme = userSettings.theme
                 viewModel.currTheme = theme as String
                 viewModel.currLang = userSettings.lang
-                Log.d("Settings","$theme n")
+                Log.d("Settings","$theme n")*/
 
                 withContext(Dispatchers.Main){
                     when(theme){
@@ -71,16 +70,21 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
 
-        when(this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)){
+        /*when(this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)){
             Configuration.UI_MODE_NIGHT_YES->{
-                viewModel.currTheme="dark"
+                //viewModel.currTheme="dark"
             }
-        }
+        }*/
 
 
 
     }
 
+
+    fun restartActivity(){
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+    }
 
 
 
