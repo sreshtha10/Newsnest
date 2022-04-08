@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentBreakingNewsBinding
@@ -20,9 +25,8 @@ import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.Constants
-import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
-
+import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
 
 class BreakingNewsFragment : Fragment() {
@@ -35,6 +39,8 @@ class BreakingNewsFragment : Fragment() {
     private var isLastPage = false
     private var currCategory:String = "general"
     private var currRegion:String="global"
+    private var englishHindiTranslator:Translator?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,34 +70,62 @@ class BreakingNewsFragment : Fragment() {
             )
         }
 
-        viewModel.breakingResponseData.observe(viewLifecycleOwner, { it ->
-            when(it){
-                is Resource.Success<NewsModel> ->{
-                        hideProgressBar()
-                        it.data?.let {
-                            val newList : List<Article> = it.articles.toList()
-                            adapter.differ.submitList(newList)
-                            val totalPages = it.totalResults/Constants.PAGE_SIZE +2
+
+        viewModel.breakingResponseData.observe(viewLifecycleOwner) { it ->
+            when (it) {
+                is Resource.Success<NewsModel> -> {
+                    hideProgressBar()
+                    Log.d("TRANSLATE__","Observer is called")
+                    it.data?.let { newsModel->
+                        val newList: List<Article> = newsModel.articles.toList()
+                        //val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME, Context.MODE_PRIVATE)
+
+                        /*if(sharedPrefs?.getBoolean(STRING_IS_LANG_ENG,false)==false){
+                            val hindiList = mutableListOf<Article>()
+                            newList.forEach {
+                                hindiList.add(Article(
+                                    it.author?.let { it1 -> translateString(it1) },
+                                    it.content?.let { it1 -> translateString(it1) },
+                                    translateString(it.description),
+                                    it.publishedAt,
+                                    it.source,
+                                    translateString(it.title),
+                                    it.url,
+                                    it.urlToImage
+                                ))
+
+                                Log.d("TRANSLATE__",hindiList.toString())
+
+                            }
+
+                            adapter.differ.submitList(hindiList)
+                            val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
                             isLastPage = viewModel.breakingNewsPage == totalPages
-                        }
-                    Log.d("TAG",it.data.toString())
+                            return@observe
+                        }*/
+
+                            //Log.d("TRANSLATE__",newList.toString())
+                            adapter.differ.submitList(newList)
+                            val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
+                            isLastPage = viewModel.breakingNewsPage == totalPages
+
+
+                    }
+                    Log.d("TAG", it.data.toString())
                 }
-                is Resource.Error<NewsModel> ->{
+                is Resource.Error<NewsModel> -> {
                     hideProgressBar()
                     it.message?.let { it1 ->
                         Log.d("TAG", it1)
                         Snackbar.make(view, it1, Snackbar.LENGTH_SHORT).show()
                     }
                 }
-                is Resource.Loading<NewsModel> ->{
-                        showProgressBar()
+                is Resource.Loading<NewsModel> -> {
+                    showProgressBar()
                 }
             }
 
-        })
-
-
-
+        }
 
 
         //initially displaying worldwide news (general)
@@ -228,6 +262,17 @@ class BreakingNewsFragment : Fragment() {
         val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
         binding?.categorySpinner?.adapter = categoryAdapter
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

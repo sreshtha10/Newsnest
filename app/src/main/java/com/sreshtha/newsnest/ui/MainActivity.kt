@@ -3,17 +3,26 @@ package com.sreshtha.newsnest.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,12 +55,11 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-
-
-
         val navHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
+
+        setUpTranslator()
 
 
 
@@ -63,8 +71,28 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun setUpTranslator(){
+        // Create an English-German translator:
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.HINDI)
+            .build()
+        val englishHindiTranslator = Translation.getClient(options)
+        val conditions = DownloadConditions.Builder()
+            .build()
 
+        CoroutineScope(Dispatchers.IO).launch {
+            englishHindiTranslator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener {
+                    Log.d("ALERT","download completed")
+                    //todo toast
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("ALERT","download cancelled")
+                }
+        }
 
+    }
 
 }
 

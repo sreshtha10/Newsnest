@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.sreshtha.newsnest"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 31
         multiDexEnabled true
         versionCode 1
@@ -91,5 +91,8 @@ dependencies {
 
     //multidex
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    //ML kit
+    implementation 'com.google.mlkit:translate:17.0.0'
 
 }
