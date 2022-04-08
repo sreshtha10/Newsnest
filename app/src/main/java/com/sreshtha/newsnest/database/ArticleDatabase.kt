@@ -9,7 +9,7 @@ import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.UserSettings
 
 @Database(
-    entities = [Article::class,UserSettings::class],
+    entities = [Article::class],
     version = 1
 )
 @TypeConverters(Converters::class)

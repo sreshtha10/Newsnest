@@ -17,9 +17,4 @@ interface ArticleDAO {
     @Delete
     suspend fun delete(article: Article)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert_settings(settings:UserSettings)
-
-    @Query("SELECT * FROM user_settings")
-    fun get_user_settings():UserSettings
 }

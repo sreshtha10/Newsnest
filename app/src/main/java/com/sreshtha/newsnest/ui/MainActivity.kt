@@ -1,5 +1,6 @@
 package com.sreshtha.newsnest.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: NewsViewModel
 
+    companion object{
+        const val STRING_PREF_NAME="USER_SETTINGS"
+        const val STRING_IS_DARK_MODE = "IS_DARK_MODE"
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +43,18 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        val sharedPreferences = this.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
+        if(sharedPreferences.getBoolean(STRING_IS_DARK_MODE,false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        /*
         try{
             var theme:String?=null
             lifecycleScope.launch(Dispatchers.IO){
-                val userSettings = viewModel.get_user_settings()
-
-                if(userSettings==null){
-                    return@launch
-                }
-
-                /*theme = userSettings.theme
-                viewModel.currTheme = theme as String
-                viewModel.currLang = userSettings.lang
-                Log.d("Settings","$theme n")*/
 
                 withContext(Dispatchers.Main){
                     when(theme){
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         }
         catch (e:Exception){
             Log.d("Settings",e.message.toString())
-        }
+        }*/
 
 
         val navHost =

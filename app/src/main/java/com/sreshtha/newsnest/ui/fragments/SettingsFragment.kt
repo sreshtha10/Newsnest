@@ -1,6 +1,8 @@
 package com.sreshtha.newsnest.ui.fragments
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +20,10 @@ import com.sreshtha.newsnest.viewmodel.NewsViewModel
 class SettingsFragment: Fragment() {
     private var binding:FragmentSettingsBinding?=null
     private lateinit var viewModel: NewsViewModel
+    companion object{
+        const val STRING_PREF_NAME="USER_SETTINGS"
+        const val STRING_IS_DARK_MODE = "IS_DARK_MODE"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +49,19 @@ class SettingsFragment: Fragment() {
             }
         }*/
 
-        binding?.switchDarkTheme?.isChecked = this.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-
+        val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
+        val editor = sharedPrefs?.edit()
+        binding?.switchDarkTheme?.isChecked = sharedPrefs?.getBoolean(STRING_IS_DARK_MODE,false) == true
 
         binding?.switchDarkTheme?.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
                 true ->{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+                    editor?.putBoolean(STRING_IS_DARK_MODE,true)
+                    editor?.apply()
+
+
                     //viewModel.currTheme = "dark"
                     //viewModel.insert_settings(UserSettings(1,"dark",viewModel.currLang!!))
                     /*lifecycleScope.launch(Dispatchers.IO){
@@ -59,6 +71,8 @@ class SettingsFragment: Fragment() {
                 }
                 false -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    editor?.putBoolean(STRING_IS_DARK_MODE,false)
+                    editor?.apply()
                     //viewModel.currTheme = "light"
                     //viewModel.insert_settings(UserSettings(1,"light",viewModel.currLang!!))
                     /*lifecycleScope.launch(Dispatchers.IO){
