@@ -101,17 +101,24 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
             .build()
         val englishHindiTranslator = Translation.getClient(options)
 
-        englishHindiTranslator.translate(string)
-            .addOnSuccessListener {
-                holder.binding.apply {
-                    tvTitle.text = it.toString()
+        try {
+            englishHindiTranslator.translate(string)
+                .addOnSuccessListener {
+                    holder.binding.apply {
+                        tvTitle.text = it.toString()
+                    }
                 }
-            }
-            .addOnFailureListener {
-                holder.binding.apply {
-                    tvTitle.text = string
+                .addOnFailureListener {
+                    holder.binding.apply {
+                        tvTitle.text = string
+                    }
                 }
-            }
+        }
+        catch (e:Exception){
+            holder.binding.tvTitle.text = string
+            Log.d("TRANSLATION_ERROR",e.toString())
+            //todo toast
+        }
     }
 
 
