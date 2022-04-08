@@ -2,8 +2,6 @@ package com.sreshtha.newsnest.ui.fragments
 
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +21,7 @@ class SettingsFragment: Fragment() {
     companion object{
         const val STRING_PREF_NAME="USER_SETTINGS"
         const val STRING_IS_DARK_MODE = "IS_DARK_MODE"
+        const val STRING_IS_LANG_ENG = "IS_LANG_ENG"
     }
 
     override fun onCreateView(
@@ -39,16 +38,6 @@ class SettingsFragment: Fragment() {
 
         viewModel = (activity as MainActivity).viewModel
 
-        /*
-        when(viewModel.currTheme){
-            "dark" -> {
-                binding?.switchDarkTheme?.isChecked = true
-            }
-            "light" -> {
-                binding?.switchDarkTheme?.isChecked=false
-            }
-        }*/
-
         val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
         val editor = sharedPrefs?.edit()
         binding?.switchDarkTheme?.isChecked = sharedPrefs?.getBoolean(STRING_IS_DARK_MODE,false) == true
@@ -61,27 +50,21 @@ class SettingsFragment: Fragment() {
                     editor?.putBoolean(STRING_IS_DARK_MODE,true)
                     editor?.apply()
 
-
-                    //viewModel.currTheme = "dark"
-                    //viewModel.insert_settings(UserSettings(1,"dark",viewModel.currLang!!))
-                    /*lifecycleScope.launch(Dispatchers.IO){
-                        val theme = viewModel.get_user_settings().theme
-                        Log.d("Settings",theme)
-                    }*/
                 }
                 false -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     editor?.putBoolean(STRING_IS_DARK_MODE,false)
                     editor?.apply()
-                    //viewModel.currTheme = "light"
-                    //viewModel.insert_settings(UserSettings(1,"light",viewModel.currLang!!))
-                    /*lifecycleScope.launch(Dispatchers.IO){
-                        val theme = viewModel.get_user_settings().theme
-                        Log.d("Settings",theme)
-                    }*/
                 }
 
             }
+        }
+
+        if(sharedPrefs?.getBoolean(STRING_IS_LANG_ENG,true) == true){
+            binding?.spLang?.setSelection(0)
+        }
+        else{
+            binding?.spLang?.setSelection(1)
         }
 
 
@@ -103,11 +86,13 @@ class SettingsFragment: Fragment() {
                 if(parent?.getItemAtPosition(position).toString() == "English"){
                     //viewModel.insert_settings(UserSettings(1,viewModel.currTheme,viewModel.currLang))
                     LocaleHelper.setLocale(activity,"en")
+                    editor?.putBoolean(STRING_IS_LANG_ENG,true)?.apply()
                     (activity as MainActivity).restartActivity()
                 }
                 else{
                     //viewModel.insert_settings(UserSettings(1,viewModel.currTheme,viewModel.currLang))
                     LocaleHelper.setLocale(activity,"hi")
+                    editor?.putBoolean(STRING_IS_LANG_ENG,false)?.apply()
                     (activity as MainActivity).restartActivity()
                 }
             }

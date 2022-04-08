@@ -2,12 +2,10 @@ package com.sreshtha.newsnest.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sreshtha.newsnest.R
@@ -16,9 +14,6 @@ import com.sreshtha.newsnest.databinding.ActivityMainBinding
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,35 +46,12 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-        /*
-        try{
-            var theme:String?=null
-            lifecycleScope.launch(Dispatchers.IO){
 
-                withContext(Dispatchers.Main){
-                    when(theme){
-                        "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    }
-                }
-
-            }
-
-        }
-        catch (e:Exception){
-            Log.d("Settings",e.message.toString())
-        }*/
 
 
         val navHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
-
-        /*when(this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)){
-            Configuration.UI_MODE_NIGHT_YES->{
-                //viewModel.currTheme="dark"
-            }
-        }*/
 
 
 
