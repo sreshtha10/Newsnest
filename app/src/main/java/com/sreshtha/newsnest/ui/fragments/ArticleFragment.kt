@@ -1,6 +1,7 @@
 package com.sreshtha.newsnest.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,8 @@ class ArticleFragment : Fragment() {
         val bottomNav = (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.visibility = View.GONE
 
+
+        Log.d(Constants.ARTICLE_TAG,sourceType+" "+article.toString())
 
 
 

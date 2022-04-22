@@ -1,6 +1,5 @@
 package com.sreshtha.newsnest.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,8 +21,8 @@ import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.Constants
-import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.utils.Resource
+import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
