@@ -60,7 +60,8 @@ class SearchNewsFragment : Fragment() {
 
         adapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article",it)
+                putSerializable(Constants.ARTICLE_TAG,it)
+                putString(Constants.TYPE_TAG,Constants.SEARCH_NEWS_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_searchNewsFragment_to_articleFragment,
@@ -68,14 +69,14 @@ class SearchNewsFragment : Fragment() {
             )
         }
 
-        viewModel.searchResponseData.observe(viewLifecycleOwner, { it ->
+        viewModel.searchResponseData.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is Resource.Success<NewsModel> -> {
                     hideProgressBar()
                     it.data?.let {
-                        val newList : List<Article> = it.articles.toList()
+                        val newList: List<Article> = it.articles.toList()
                         adapter.differ.submitList(newList)
-                        val totalPages = it.totalResults/Constants.PAGE_SIZE +2
+                        val totalPages = it.totalResults / Constants.PAGE_SIZE + 2
                         isLastPage = viewModel.searchNewsPage == totalPages
 
                     }
@@ -83,7 +84,8 @@ class SearchNewsFragment : Fragment() {
                 }
                 is Resource.Error<NewsModel> -> {
                     hideProgressBar()
-                    it.message?.let { it1 -> Log.d("TAG", it1)
+                    it.message?.let { it1 ->
+                        Log.d("TAG", it1)
                         Snackbar.make(view, it1, Snackbar.LENGTH_SHORT).show()
                     }
 
@@ -93,7 +95,7 @@ class SearchNewsFragment : Fragment() {
                 }
             }
 
-        })
+        }
 
         var job:Job?=null
 

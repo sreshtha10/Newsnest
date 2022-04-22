@@ -11,6 +11,19 @@
         <argument
             android:name="article"
             app:argType="com.sreshtha.newsnest.model.Article" />
+        <action
+            android:id="@+id/action_articleFragment_to_searchNewsFragment"
+            app:destination="@id/searchNewsFragment" />
+        <action
+            android:id="@+id/action_articleFragment_to_savedNewsFragment"
+            app:destination="@id/savedNewsFragment" />
+        <action
+            android:id="@+id/action_articleFragment_to_breakingNewsFragment"
+            app:destination="@id/breakingNewsFragment" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue="breaking_fragment" />
     </fragment>
     <fragment
         android:id="@+id/savedNewsFragment"

@@ -19,6 +19,7 @@ import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentSavedNewsBinding
 import com.sreshtha.newsnest.ui.MainActivity
+import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
 class SavedNewsFragment : Fragment() {
@@ -49,19 +50,18 @@ class SavedNewsFragment : Fragment() {
             binding?.emptyView?.visibility = View.VISIBLE
         }
 
-        viewModel.getAllSavedArticles().observe(viewLifecycleOwner,{
-            if(it != null){
-                if(it.isEmpty()){
+        viewModel.getAllSavedArticles().observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it.isEmpty()) {
                     binding?.emptyView?.visibility = View.VISIBLE
-                }
-                else{
+                } else {
                     binding?.emptyView?.visibility = View.INVISIBLE
                     adapter.differ.submitList(it)
                 }
 
             }
 
-        })
+        }
 
 
         viewModel.getAllSavedArticles()
@@ -69,7 +69,8 @@ class SavedNewsFragment : Fragment() {
 
         adapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article",it)
+                putSerializable(Constants.ARTICLE_TAG,it)
+                putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_savedNewsFragment_to_articleFragment,

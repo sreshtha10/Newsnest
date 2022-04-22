@@ -39,7 +39,8 @@ class BreakingNewsFragment : Fragment() {
     private var isLastPage = false
     private var currCategory:String = "general"
     private var currRegion:String="global"
-    private var englishHindiTranslator:Translator?=null
+
+
 
 
     override fun onCreateView(
@@ -62,7 +63,8 @@ class BreakingNewsFragment : Fragment() {
 
         adapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article",it)
+                putSerializable(Constants.ARTICLE_TAG,it)
+                putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_breakingNewsFragment_to_articleFragment,
