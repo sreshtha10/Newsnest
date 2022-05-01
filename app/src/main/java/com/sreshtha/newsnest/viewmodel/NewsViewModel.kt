@@ -7,8 +7,6 @@ import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
 import android.util.Log
-import android.view.translation.TranslationCapability
-import android.view.translation.Translator
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,18 +16,14 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.MyApplication
 import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
-import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.repository.NewsRepository
+import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import org.jsoup.Jsoup
 import retrofit2.Response
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
-import java.net.URL
 
 class NewsViewModel(
     app:Application,
@@ -42,7 +36,9 @@ class NewsViewModel(
     var searchNewsPage =1
     var totalBreakingNewsData:NewsModel? = null
     var totalSearchNewsData:NewsModel?=null
-    val scrapedData:MutableLiveData<String> = MutableLiveData()
+    val scrapedDataBreakingNewsFragment:MutableLiveData<Article> = MutableLiveData()
+    val scrapedDataSavedNewsFragment:MutableLiveData<Article> = MutableLiveData()
+    val scrapedDataSearchNewsFragment:MutableLiveData<Article> = MutableLiveData()
 
 
     fun getWorldWideNews(category:String) = viewModelScope.launch{
@@ -230,13 +226,13 @@ class NewsViewModel(
     }
 
 
-    fun renderDataFromUrl(urlString:String,desc:String){
+    fun renderDataFromUrl(urlString:String,article: Article, type:String){
         viewModelScope.launch(Dispatchers.IO){
             val htmlString = Jsoup.connect(urlString).get().outerHtml()
             val doc = Jsoup.parse(htmlString)
             var txt = doc.select("p").text()
             if(txt.isEmpty()){
-                txt = desc
+                txt = article.description
             }
 
             val options = TranslatorOptions.Builder()
@@ -250,12 +246,20 @@ class NewsViewModel(
                 .addOnFailureListener {
                     Log.d("VIEWMODEL_TRANSLATE",it.toString())
                 }
-                .addOnSuccessListener {
-                    scrapedData.value = it
-                    Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                .addOnSuccessListener { desc ->
+                    englishHindiTranslator.translate(article.title)
+                        .addOnFailureListener {
+                            Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                        }
+                        .addOnSuccessListener { title ->
+                            val article = Article(description = desc, source = article.source, publishedAt = article.publishedAt, title = title, author = article.author, content = article.content, url = article.url, urlToImage = article.urlToImage)
+                            when(type){
+                                Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = article
+                                Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = article
+                                Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = article
+                            }
+                        }
                 }
-
-            //kill all script and style elements
         }
     }
 
