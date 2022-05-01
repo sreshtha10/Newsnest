@@ -14,10 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.Translator
-import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.databinding.FragmentBreakingNewsBinding
@@ -42,7 +38,6 @@ class BreakingNewsFragment : Fragment() {
 
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +56,29 @@ class BreakingNewsFragment : Fragment() {
         setUpRecyclerView()
         setUpSpinners()
 
+
+        viewModel.scrapedData.observe(viewLifecycleOwner){
+            //todo launch HindiDataFragment
+            Log.d(Constants.BREAKING_FRAGMENT,it)
+        }
+
+
+
         adapter.setOnItemClickListener {
+            val sharedPreferences =(activity as MainActivity).getSharedPreferences(
+                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
+            if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
+                try{
+                    viewModel.renderDataFromUrl(it.url,it.description)
+                    return@setOnItemClickListener
+                }
+                catch (e:Exception){
+                    Log.d("HTML_CODE",e.toString())
+                    //todo toast
+                    Snackbar.make(view,"Cannot Open Article in Hindi",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
             val bundle = Bundle().apply {
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
@@ -264,14 +281,6 @@ class BreakingNewsFragment : Fragment() {
         val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
         binding?.categorySpinner?.adapter = categoryAdapter
     }
-
-
-
-
-
-
-
-
 
 
 

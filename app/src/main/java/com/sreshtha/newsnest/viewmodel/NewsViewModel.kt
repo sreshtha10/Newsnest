@@ -6,18 +6,30 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
+import android.util.Log
+import android.view.translation.TranslationCapability
+import android.view.translation.Translator
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.MyApplication
 import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.model.UserSettings
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.utils.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
+import org.jsoup.Jsoup
 import retrofit2.Response
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
+import java.net.URL
 
 class NewsViewModel(
     app:Application,
@@ -30,6 +42,7 @@ class NewsViewModel(
     var searchNewsPage =1
     var totalBreakingNewsData:NewsModel? = null
     var totalSearchNewsData:NewsModel?=null
+    val scrapedData:MutableLiveData<String> = MutableLiveData()
 
 
     fun getWorldWideNews(category:String) = viewModelScope.launch{
@@ -215,5 +228,37 @@ class NewsViewModel(
         }
         return false
     }
+
+
+    fun renderDataFromUrl(urlString:String,desc:String){
+        viewModelScope.launch(Dispatchers.IO){
+            val htmlString = Jsoup.connect(urlString).get().outerHtml()
+            val doc = Jsoup.parse(htmlString)
+            var txt = doc.select("p").text()
+            if(txt.isEmpty()){
+                txt = desc
+            }
+
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(TranslateLanguage.HINDI)
+                .build()
+
+            val englishHindiTranslator = Translation.getClient(options)
+
+            englishHindiTranslator.translate(txt)
+                .addOnFailureListener {
+                    Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                }
+                .addOnSuccessListener {
+                    scrapedData.value = it
+                    Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                }
+
+            //kill all script and style elements
+        }
+    }
+
+
 
 }

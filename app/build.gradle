@@ -21,6 +21,7 @@ android {
         buildConfigField "String", "API_KEY", API_KEY
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -94,5 +95,8 @@ dependencies {
 
     //ML kit
     implementation 'com.google.mlkit:translate:17.0.0'
+
+    //Jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
 
 }
