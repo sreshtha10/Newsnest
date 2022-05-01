@@ -36,6 +36,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_savedNewsFragment_to_hindiArticleFragment"
+            app:destination="@id/hindiArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/breakingNewsFragment"
@@ -49,6 +52,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_breakingNewsFragment_to_hindiArticleFragment"
+            app:destination="@id/hindiArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
@@ -61,9 +67,32 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_searchNewsFragment_to_hindiArticleFragment"
+            app:destination="@id/hindiArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.sreshtha.newsnest.ui.fragments.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/hindiArticleFragment"
+        android:name="com.sreshtha.newsnest.ui.fragments.HindiArticleFragment"
+        android:label="HindiArticleFragment" >
+        <action
+            android:id="@+id/action_hindiArticleFragment_to_breakingNewsFragment"
+            app:destination="@id/breakingNewsFragment" />
+        <action
+            android:id="@+id/action_hindiArticleFragment_to_savedNewsFragment"
+            app:destination="@id/savedNewsFragment" />
+        <action
+            android:id="@+id/action_hindiArticleFragment_to_searchNewsFragment"
+            app:destination="@id/searchNewsFragment" />
+        <argument
+            android:name="article"
+            app:argType="com.sreshtha.newsnest.model.Article" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
 </navigation>

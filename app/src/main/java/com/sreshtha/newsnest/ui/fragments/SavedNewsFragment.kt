@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +68,37 @@ class SavedNewsFragment : Fragment() {
         viewModel.getAllSavedArticles()
         setUpSwipeToDelete()
 
+
+        viewModel.scrapedDataSavedNewsFragment.observe(viewLifecycleOwner){
+            //todo launch HindiDataFragment
+            Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            val bundle = Bundle().apply {
+                putSerializable(Constants.ARTICLE_TAG,it)
+                putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)
+            }
+
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_hindiArticleFragment,
+                bundle
+            )
+        }
+
         adapter.setOnItemClickListener {
+
+            val sharedPreferences =(activity as MainActivity).getSharedPreferences(
+                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
+            if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
+                try{
+                    viewModel.renderDataFromUrl(it.url,it,Constants.SAVED_NEWS_FRAGMENT)
+                    return@setOnItemClickListener
+                }
+                catch (e:Exception){
+                    Log.d("HTML_CODE",e.toString())
+                    //todo toast
+                    Snackbar.make(view,"Cannot Open Article in Hindi",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
             val bundle = Bundle().apply {
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)

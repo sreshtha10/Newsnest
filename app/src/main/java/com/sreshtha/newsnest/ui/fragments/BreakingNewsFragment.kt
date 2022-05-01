@@ -57,9 +57,18 @@ class BreakingNewsFragment : Fragment() {
         setUpSpinners()
 
 
-        viewModel.scrapedData.observe(viewLifecycleOwner){
+        viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
-            Log.d(Constants.BREAKING_FRAGMENT,it)
+            Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            val bundle = Bundle().apply {
+                putSerializable(Constants.ARTICLE_TAG,it)
+                putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
+            }
+
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_hindiArticleFragment,
+                bundle
+            )
         }
 
 
@@ -69,7 +78,7 @@ class BreakingNewsFragment : Fragment() {
                 NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
             if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
                 try{
-                    viewModel.renderDataFromUrl(it.url,it.description)
+                    viewModel.renderDataFromUrl(it.url,it,Constants.BREAKING_FRAGMENT)
                     return@setOnItemClickListener
                 }
                 catch (e:Exception){
