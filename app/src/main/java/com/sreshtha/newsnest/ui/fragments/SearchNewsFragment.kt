@@ -65,14 +65,16 @@ class SearchNewsFragment : Fragment() {
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
+            (activity as MainActivity).alertDialog?.cancel()
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
             val bundle = Bundle().apply {
+                viewModel.isArticleOpenInHindi = true
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.SEARCH_NEWS_FRAGMENT)
             }
 
             findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_hindiArticleFragment,
+                R.id.action_searchNewsFragment_to_hindiArticleFragment,
                 bundle
             )
         }

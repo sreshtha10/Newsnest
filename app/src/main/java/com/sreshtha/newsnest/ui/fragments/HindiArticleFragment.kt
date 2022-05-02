@@ -10,11 +10,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.databinding.FragmentHindiArticleBinding
 import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.Constants
+import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
 class HindiArticleFragment:Fragment() {
 
@@ -22,6 +24,7 @@ class HindiArticleFragment:Fragment() {
     val args:HindiArticleFragmentArgs by navArgs()
     private lateinit var article: Article
     private lateinit var sourceType:String
+    private lateinit var viewModel:NewsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +32,7 @@ class HindiArticleFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         hindiArticleBinding = FragmentHindiArticleBinding.inflate(inflater,container,false)
+        viewModel = (activity as MainActivity).viewModel
         article = args.article
         sourceType = args.type
         return  hindiArticleBinding?.root
@@ -60,6 +64,17 @@ class HindiArticleFragment:Fragment() {
             tvNewsText.text = article.description
             tvTitle.text= article.title
             Glide.with(view).load(article.urlToImage).into(ivImage)
+        }
+
+
+        hindiArticleBinding?.fab?.setOnClickListener {
+            viewModel.insert(article)
+            Snackbar.make(view,"Article Saved Successfully", Snackbar.LENGTH_SHORT).apply {
+                setAction("Undo"){
+                    viewModel.delete(article)
+                }
+                show()
+            }
         }
 
     }

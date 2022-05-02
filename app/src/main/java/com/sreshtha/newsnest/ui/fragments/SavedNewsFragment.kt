@@ -80,14 +80,16 @@ class SavedNewsFragment : Fragment() {
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
+            (activity as MainActivity).alertDialog?.cancel()
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
             val bundle = Bundle().apply {
+                viewModel.isArticleOpenInHindi = true
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)
             }
 
             findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_hindiArticleFragment,
+                R.id.action_savedNewsFragment_to_hindiArticleFragment,
                 bundle
             )
         }
@@ -101,7 +103,9 @@ class SavedNewsFragment : Fragment() {
             if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
                 try{
                     (activity as MainActivity).alertDialog?.show()
-                    viewModel.renderDataFromUrl(it.url,it,Constants.SAVED_NEWS_FRAGMENT)
+                    viewModel.getArticleFromUrl(it.url).observe(viewLifecycleOwner){
+                        viewModel.scrapedDataSavedNewsFragment.value = it
+                    }
                     return@setOnItemClickListener
                 }
                 catch (e:Exception){
