@@ -7,9 +7,11 @@ import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
@@ -229,38 +231,46 @@ class NewsViewModel(
 
     fun renderDataFromUrl(urlString:String,article: Article, type:String){
         viewModelScope.launch(Dispatchers.IO){
-            val htmlString = Jsoup.connect(urlString).get().outerHtml()
-            val doc = Jsoup.parse(htmlString)
-            var txt = doc.select("p").text()
-            if(txt.isEmpty()){
-                txt = article.description
+
+            try {
+                val htmlString = Jsoup.connect(urlString).get().outerHtml()
+                val doc = Jsoup.parse(htmlString)
+                var txt = doc.select("p").text()
+                if(txt.isEmpty()){
+                    txt = article.description
+                }
+
+                val options = TranslatorOptions.Builder()
+                    .setSourceLanguage(TranslateLanguage.ENGLISH)
+                    .setTargetLanguage(TranslateLanguage.HINDI)
+                    .build()
+
+                val englishHindiTranslator = Translation.getClient(options)
+
+                englishHindiTranslator.translate(txt)
+                    .addOnFailureListener {
+                        Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                    }
+                    .addOnSuccessListener { desc ->
+                        englishHindiTranslator.translate(article.title)
+                            .addOnFailureListener {
+                                Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                            }
+                            .addOnSuccessListener { title ->
+                                val article = Article(description = desc, source = article.source, publishedAt = article.publishedAt, title = title, author = article.author, content = article.content, url = article.url, urlToImage = article.urlToImage)
+                                when(type){
+                                    Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = article
+                                    Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = article
+                                    Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = article
+                                }
+                            }
+                    }
+            }
+            catch (e:Exception){
+                Log.d(Constants.NEWS_VIEW_MODEL, e.toString())
+                Toast.makeText(getApplication(), "Cannot open this article in Hindi!",Toast.LENGTH_SHORT).show()
             }
 
-            val options = TranslatorOptions.Builder()
-                .setSourceLanguage(TranslateLanguage.ENGLISH)
-                .setTargetLanguage(TranslateLanguage.HINDI)
-                .build()
-
-            val englishHindiTranslator = Translation.getClient(options)
-
-            englishHindiTranslator.translate(txt)
-                .addOnFailureListener {
-                    Log.d("VIEWMODEL_TRANSLATE",it.toString())
-                }
-                .addOnSuccessListener { desc ->
-                    englishHindiTranslator.translate(article.title)
-                        .addOnFailureListener {
-                            Log.d("VIEWMODEL_TRANSLATE",it.toString())
-                        }
-                        .addOnSuccessListener { title ->
-                            val article = Article(description = desc, source = article.source, publishedAt = article.publishedAt, title = title, author = article.author, content = article.content, url = article.url, urlToImage = article.urlToImage)
-                            when(type){
-                                Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = article
-                                Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = article
-                                Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = article
-                            }
-                        }
-                }
         }
     }
 

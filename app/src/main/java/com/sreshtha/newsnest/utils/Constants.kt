@@ -12,5 +12,6 @@ class Constants {
         const val BREAKING_FRAGMENT="breaking_fragment"
         const val SAVED_NEWS_FRAGMENT="saved_news_fragment"
         const val SEARCH_NEWS_FRAGMENT="search_news_fragment"
+        const val NEWS_VIEW_MODEL = "news_view_model"
     }
 }

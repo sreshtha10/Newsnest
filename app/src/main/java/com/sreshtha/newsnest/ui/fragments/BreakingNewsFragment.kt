@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,6 +60,7 @@ class BreakingNewsFragment : Fragment() {
 
         viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
+
             if(viewModel.isArticleOpenInHindi){
                 viewModel.isArticleOpenInHindi = false
                 return@observe
@@ -81,6 +83,11 @@ class BreakingNewsFragment : Fragment() {
         //test commit
 
         adapter.setOnItemClickListener {
+            // if user clicks on article before image is loaded!
+            if(it.urlToImage==null){
+                Toast.makeText(requireContext(),"Please wait.. Article is loading!", Toast.LENGTH_SHORT).show()
+            }
+
             val sharedPreferences =(activity as MainActivity).getSharedPreferences(
                 NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
             if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
@@ -221,9 +228,6 @@ class BreakingNewsFragment : Fragment() {
 
     }
 
-
-
-
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -297,11 +301,5 @@ class BreakingNewsFragment : Fragment() {
         val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
         binding?.categorySpinner?.adapter = categoryAdapter
     }
-
-
-
-
-
-
 
 }
