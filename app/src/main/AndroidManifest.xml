@@ -3,6 +3,7 @@
     package="com.sreshtha.newsnest">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
