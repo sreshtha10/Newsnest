@@ -56,8 +56,6 @@ class HindiArticleFragment:Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
 
-
-
         hindiArticleBinding?.apply {
             tvNewsText.text = article.description
             tvTitle.text= article.title

@@ -60,6 +60,7 @@ class BreakingNewsFragment : Fragment() {
         viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            Log.d(Constants.BREAKING_FRAGMENT, "observer is called")
             val bundle = Bundle().apply {
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
@@ -72,6 +73,7 @@ class BreakingNewsFragment : Fragment() {
         }
 
 
+        //test commit
 
         adapter.setOnItemClickListener {
             val sharedPreferences =(activity as MainActivity).getSharedPreferences(
