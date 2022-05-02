@@ -39,6 +39,7 @@ class NewsViewModel(
     val scrapedDataBreakingNewsFragment:MutableLiveData<Article> = MutableLiveData()
     val scrapedDataSavedNewsFragment:MutableLiveData<Article> = MutableLiveData()
     val scrapedDataSearchNewsFragment:MutableLiveData<Article> = MutableLiveData()
+    var isArticleOpenInHindi:Boolean = false
 
 
     fun getWorldWideNews(category:String) = viewModelScope.launch{

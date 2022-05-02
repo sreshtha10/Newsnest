@@ -59,9 +59,14 @@ class BreakingNewsFragment : Fragment() {
 
         viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
+            if(viewModel.isArticleOpenInHindi){
+                viewModel.isArticleOpenInHindi = false
+                return@observe
+            }
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
-            Log.d(Constants.BREAKING_FRAGMENT, "observer is called")
+            Log.d("BACK__", "observer is called")
             val bundle = Bundle().apply {
+                viewModel.isArticleOpenInHindi = true
                 putSerializable(Constants.ARTICLE_TAG,it)
                 putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
             }
