@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun scheduleNotifications(){
         val notificationWork = OneTimeWorkRequest.Builder(NotifyWork::class.java)
-            .setInitialDelay(10000,TimeUnit.MILLISECONDS).setInputData(Data.Builder().putInt(Constants.NOTIFICATION_ID_TAG,
+            .setInitialDelay(6,TimeUnit.HOURS).setInputData(Data.Builder().putInt(Constants.NOTIFICATION_ID_TAG,
                 NOTIFICATION_ID).build()).build()
 
         val instanceManager = WorkManager.getInstance(this)
