@@ -3,8 +3,12 @@
 
 ## About
 
-* News app for Android.
-___
+News app for Android devices.
+
+## What's new in v2
+* Multilingual news support (Hindi and English)
+* Notifications
+* Bug fixes
 
 ## Features
 
@@ -14,41 +18,18 @@ ___
 * User can save any article locally.
 * Both Dark and Light theme are available.
 
-___
-
 
 ## Permissions Required
 
 * Internet
 * Network State
+* Vibrate
 
 ## Building the Application
-Get your API Key from newspi.org and then place the value inside app/build.gradle file.
-Modify the API_KEY entry in it.
-
-## Screenshots
-
-<table>
-  <tr>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s1.jpeg" ></td>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s2.jpeg"></td>
-  
-  </tr>
-    <tr>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s3.jpeg"></td>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s4.jpeg"></td>
-
-  </tr>
-   <tr>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s5.jpeg" >
-    </td>
-    <td><img src="https://github.com/sreshtha10/Newsnest/blob/master/screenshots/s6.jpeg" >
-    </td>
-  </tr>
-
- </table>
-
-___
+Get your API Key from newspi.org and then place the value inside gradle.properties like this:
+```
+API_KEY="your_api_key"
+```
 
 
 ## Technologies Used
@@ -60,18 +41,18 @@ ___
   * [Glide](https://github.com/bumptech/glide)
   * [Gson](https://github.com/google/gson)
   * [News API](https://newsapi.org/)
-  
+  * [Google ML Kit](https://newsapi.org/)
+  * [Jsoup](https://jsoup.org/)
+  * [Work Manager](https://developer.android.com/topic/libraries/architecture/workmanager)
+  * [Notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications)
 ___
 
 ## Compatibilty 
 
-* Android (API level 16) and higher)
-
+* Android (API level 16) and higher
 ___
 
 
 ## Licensing
 
 * Newsnest is licensed under the MIT License. See [LICENSE](https://github.com/sreshtha10/Newsnest/blob/master/LICENSE) for the full license text.
-
-### Credit - [Philipp Lackner](https://github.com/philipplackner)
