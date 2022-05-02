@@ -24,8 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-//todo save news impl in hindi translations
-// notifications via work manager
+//todo notifications via work manager
 // fix theme and lang change bugs
 
 class MainActivity : AppCompatActivity() {
