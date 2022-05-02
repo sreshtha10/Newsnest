@@ -22,6 +22,7 @@ import com.sreshtha.newsnest.model.Article
 import com.sreshtha.newsnest.model.NewsModel
 import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.Constants
+import com.sreshtha.newsnest.utils.LocaleHelper
 import com.sreshtha.newsnest.utils.Resource
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
@@ -52,7 +53,6 @@ class BreakingNewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
-
         setUpRecyclerView()
         setUpSpinners()
 
@@ -129,33 +129,6 @@ class BreakingNewsFragment : Fragment() {
                     Log.d("TRANSLATE__", "Observer is called")
                     it.data?.let { newsModel ->
                         val newList: List<Article> = newsModel.articles.toList()
-                        //val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME, Context.MODE_PRIVATE)
-
-                        /*if(sharedPrefs?.getBoolean(STRING_IS_LANG_ENG,false)==false){
-                            val hindiList = mutableListOf<Article>()
-                            newList.forEach {
-                                hindiList.add(Article(
-                                    it.author?.let { it1 -> translateString(it1) },
-                                    it.content?.let { it1 -> translateString(it1) },
-                                    translateString(it.description),
-                                    it.publishedAt,
-                                    it.source,
-                                    translateString(it.title),
-                                    it.url,
-                                    it.urlToImage
-                                ))
-
-                                Log.d("TRANSLATE__",hindiList.toString())
-
-                            }
-
-                            adapter.differ.submitList(hindiList)
-                            val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
-                            isLastPage = viewModel.breakingNewsPage == totalPages
-                            return@observe
-                        }*/
-
-                        //Log.d("TRANSLATE__",newList.toString())
                         adapter.differ.submitList(newList)
                         val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
                         isLastPage = viewModel.breakingNewsPage == totalPages

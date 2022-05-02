@@ -23,6 +23,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.R
+import com.sreshtha.newsnest.adapter.NewsAdapter
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
 import com.sreshtha.newsnest.work.NotifyWork
@@ -31,6 +32,7 @@ import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.utils.Constants.CHANNEL_ID
 import com.sreshtha.newsnest.utils.Constants.CHANNEL_NAME
 import com.sreshtha.newsnest.utils.Constants.NOTIFICATION_ID
+import com.sreshtha.newsnest.utils.LocaleHelper
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 import com.sreshtha.newsnest.viewmodel.NewsViewModelFactory
 import kotlinx.coroutines.CoroutineScope
@@ -69,6 +71,11 @@ class MainActivity : AppCompatActivity() {
         scheduleNotifications()
 
         val sharedPreferences = this.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
+
+        if (!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG, false)){
+            LocaleHelper.setLocale(this,"hi")
+        }
+
         if(sharedPreferences.getBoolean(STRING_IS_DARK_MODE,false)){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
