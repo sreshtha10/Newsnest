@@ -27,55 +27,53 @@ import retrofit2.Response
 import java.io.IOException
 
 class NewsViewModel(
-    app:Application,
-    private  val newsRepository: NewsRepository
+    app: Application,
+    private val newsRepository: NewsRepository
 ) : AndroidViewModel(app) {
 
-    val breakingResponseData:MutableLiveData<Resource<NewsModel>> = MutableLiveData()
-    val searchResponseData :MutableLiveData<Resource<NewsModel>> = MutableLiveData()
-    var breakingNewsPage =1
-    var searchNewsPage =1
-    var totalBreakingNewsData:NewsModel? = null
-    var totalSearchNewsData:NewsModel?=null
-    val scrapedDataBreakingNewsFragment:MutableLiveData<Article?> = MutableLiveData()
-    val scrapedDataSavedNewsFragment:MutableLiveData<Article?> = MutableLiveData()
-    val scrapedDataSearchNewsFragment:MutableLiveData<Article?> = MutableLiveData()
-    var isArticleOpenInHindi:Boolean = false
+    val breakingResponseData: MutableLiveData<Resource<NewsModel>> = MutableLiveData()
+    val searchResponseData: MutableLiveData<Resource<NewsModel>> = MutableLiveData()
+    var breakingNewsPage = 1
+    var searchNewsPage = 1
+    var totalBreakingNewsData: NewsModel? = null
+    var totalSearchNewsData: NewsModel? = null
+    val scrapedDataBreakingNewsFragment: MutableLiveData<Article?> = MutableLiveData()
+    val scrapedDataSavedNewsFragment: MutableLiveData<Article?> = MutableLiveData()
+    val scrapedDataSearchNewsFragment: MutableLiveData<Article?> = MutableLiveData()
+    var isArticleOpenInHindi: Boolean = false
 
 
-    fun getWorldWideNews(category:String) = viewModelScope.launch{
-            breakingResponseData.value = Resource.Loading()
-            try {
-                if(hasInternetConnection()){
-                    val response= newsRepository.getWorldWideHeadlines(category=category,breakingNewsPage)
-                    breakingResponseData.value = handleBreakingNewsResponse(response)
-                }
-                else{
-                    breakingResponseData.value = Resource.Error("No Internet Connection")
-                }
+    fun getWorldWideNews(category: String) = viewModelScope.launch {
+        breakingResponseData.value = Resource.Loading()
+        try {
+            if (hasInternetConnection()) {
+                val response =
+                    newsRepository.getWorldWideHeadlines(category = category, breakingNewsPage)
+                breakingResponseData.value = handleBreakingNewsResponse(response)
+            } else {
+                breakingResponseData.value = Resource.Error("No Internet Connection")
             }
-            catch (t:Throwable){
-                when(t){
-                    is IOException -> breakingResponseData.value = Resource.Error("Network Failure")
-                    else -> breakingResponseData.value = Resource.Error("Conversion Error")
-                }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> breakingResponseData.value = Resource.Error("Network Failure")
+                else -> breakingResponseData.value = Resource.Error("Conversion Error")
             }
+        }
 
     }
 
     fun getIndianHeadlines(category: String) = viewModelScope.launch {
         breakingResponseData.value = Resource.Loading()
         try {
-            if(hasInternetConnection()){
-                val response= newsRepository.getIndianHeadlines(category=category,breakingNewsPage)
+            if (hasInternetConnection()) {
+                val response =
+                    newsRepository.getIndianHeadlines(category = category, breakingNewsPage)
                 breakingResponseData.value = handleBreakingNewsResponse(response)
-            }
-            else{
+            } else {
                 breakingResponseData.value = Resource.Error("No Internet Connection")
             }
-        }
-        catch (t:Throwable){
-            when(t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> breakingResponseData.value = Resource.Error("Network Failure")
                 else -> breakingResponseData.value = Resource.Error("Conversion Error")
             }
@@ -83,19 +81,18 @@ class NewsViewModel(
     }
 
 
-    fun searchSortByPopularity(query:String) = viewModelScope.launch {
+    fun searchSortByPopularity(query: String) = viewModelScope.launch {
         searchResponseData.value = Resource.Loading()
         try {
-            if(hasInternetConnection()){
-                val response= newsRepository.searchSortByPopularity(query = query,page =searchNewsPage)
+            if (hasInternetConnection()) {
+                val response =
+                    newsRepository.searchSortByPopularity(query = query, page = searchNewsPage)
                 searchResponseData.value = handleSearchNewsResponse(response)
-            }
-            else{
+            } else {
                 searchResponseData.value = Resource.Error("No Internet Connection")
             }
-        }
-        catch (t:Throwable){
-            when(t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> searchResponseData.value = Resource.Error("Network Failure")
                 else -> searchResponseData.value = Resource.Error("Conversion Error")
             }
@@ -104,38 +101,36 @@ class NewsViewModel(
     }
 
 
-    fun searchSortByNewest(query:String) = viewModelScope.launch {
+    fun searchSortByNewest(query: String) = viewModelScope.launch {
         searchResponseData.value = Resource.Loading()
         try {
-            if(hasInternetConnection()){
-                val response= newsRepository.searchSortByNewest(query = query,page =searchNewsPage)
+            if (hasInternetConnection()) {
+                val response =
+                    newsRepository.searchSortByNewest(query = query, page = searchNewsPage)
                 searchResponseData.value = handleSearchNewsResponse(response)
-            }
-            else{
+            } else {
                 searchResponseData.value = Resource.Error("No Internet Connection")
             }
-        }
-        catch (t:Throwable){
-            when(t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> searchResponseData.value = Resource.Error("Network Failure")
                 else -> searchResponseData.value = Resource.Error("Conversion Error")
             }
         }
     }
 
-    fun searchSortByRelevancy(query:String) = viewModelScope.launch {
+    fun searchSortByRelevancy(query: String) = viewModelScope.launch {
         searchResponseData.value = Resource.Loading()
         try {
-            if(hasInternetConnection()){
-                val response= newsRepository.searchSortByRelevancy(query = query,page =searchNewsPage)
+            if (hasInternetConnection()) {
+                val response =
+                    newsRepository.searchSortByRelevancy(query = query, page = searchNewsPage)
                 searchResponseData.value = handleSearchNewsResponse(response)
-            }
-            else{
+            } else {
                 searchResponseData.value = Resource.Error("No Internet Connection")
             }
-        }
-        catch (t:Throwable){
-            when(t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> searchResponseData.value = Resource.Error("Network Failure")
                 else -> searchResponseData.value = Resource.Error("Conversion Error")
             }
@@ -143,46 +138,41 @@ class NewsViewModel(
     }
 
 
-    private fun handleBreakingNewsResponse(response: Response<NewsModel>):Resource<NewsModel>{
-        if(response.isSuccessful){
+    private fun handleBreakingNewsResponse(response: Response<NewsModel>): Resource<NewsModel> {
+        if (response.isSuccessful) {
             response.body()?.let {
                 breakingNewsPage++
-                if(totalBreakingNewsData == null){
+                if (totalBreakingNewsData == null) {
                     totalBreakingNewsData = it
-                }
-                else{
+                } else {
                     val prevResponse = totalBreakingNewsData?.articles
                     val newArticles = it.articles
                     prevResponse?.addAll(newArticles)
                 }
-                return Resource.Success(totalBreakingNewsData?:it)
+                return Resource.Success(totalBreakingNewsData ?: it)
             }
         }
         return Resource.Error(response.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsModel>):Resource<NewsModel>{
-        if(response.isSuccessful){
+    private fun handleSearchNewsResponse(response: Response<NewsModel>): Resource<NewsModel> {
+        if (response.isSuccessful) {
             searchNewsPage++
             response.body()?.let {
-                if(totalSearchNewsData == null){
-                        totalSearchNewsData= it
-                }
-                else{
+                if (totalSearchNewsData == null) {
+                    totalSearchNewsData = it
+                } else {
 
                     val prevResponse = totalSearchNewsData?.articles
                     val newArticles = it.articles
                     prevResponse?.addAll(newArticles)
                 }
 
-                return Resource.Success(totalSearchNewsData?:it)
+                return Resource.Success(totalSearchNewsData ?: it)
             }
         }
         return Resource.Error(response.message())
     }
-
-
-
 
 
     fun insert(article: Article) = viewModelScope.launch {
@@ -196,29 +186,25 @@ class NewsViewModel(
     fun getAllSavedArticles() = newsRepository.getAllSavedArticles()
 
 
-
-
-
-
-    private fun hasInternetConnection():Boolean{
+    private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MyApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            val activeNetwork = connectivityManager.activeNetwork?:return false
-            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)?:return false
-            return when{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
                 capabilities.hasTransport(TRANSPORT_WIFI) -> true
                 capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
                 capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
                 else -> return false
             }
 
-        }
-        else{
+        } else {
             connectivityManager.activeNetworkInfo?.run {
-                return when(type){
+                return when (type) {
                     TYPE_WIFI -> true
                     TYPE_MOBILE -> true
                     TYPE_ETHERNET -> true
@@ -230,14 +216,14 @@ class NewsViewModel(
     }
 
 
-    fun renderDataFromUrl(urlString:String,article: Article, type:String){
-        viewModelScope.launch(Dispatchers.IO){
+    fun renderDataFromUrl(urlString: String, article: Article, type: String) {
+        viewModelScope.launch(Dispatchers.IO) {
 
             try {
                 val htmlString = Jsoup.connect(urlString).get().outerHtml()
                 val doc = Jsoup.parse(htmlString)
                 var txt = doc.select("p").text()
-                if(txt.isEmpty()){
+                if (txt.isEmpty()) {
                     txt = article.description
                 }
 
@@ -250,37 +236,52 @@ class NewsViewModel(
 
                 englishHindiTranslator.translate(txt)
                     .addOnFailureListener {
-                        Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                        Log.d("VIEWMODEL_TRANSLATE", it.toString())
                     }
                     .addOnSuccessListener { desc ->
                         englishHindiTranslator.translate(article.title)
                             .addOnFailureListener {
-                                Log.d("VIEWMODEL_TRANSLATE",it.toString())
+                                Log.d("VIEWMODEL_TRANSLATE", it.toString())
                             }
                             .addOnSuccessListener { title ->
-                                val article = Article(description = desc, source = article.source, publishedAt = article.publishedAt, title = title, author = article.author, content = article.content, url = article.url, urlToImage = article.urlToImage)
-                                when(type){
-                                    Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = article
-                                    Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = article
-                                    Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = article
+                                val article = Article(
+                                    description = desc,
+                                    source = article.source,
+                                    publishedAt = article.publishedAt,
+                                    title = title,
+                                    author = article.author,
+                                    content = article.content,
+                                    url = article.url,
+                                    urlToImage = article.urlToImage
+                                )
+                                when (type) {
+                                    Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value =
+                                        article
+                                    Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value =
+                                        article
+                                    Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value =
+                                        article
                                 }
                             }
                     }
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 Log.d(Constants.NEWS_VIEW_MODEL, e.toString())
-                when(type){
+                when (type) {
                     Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = null
                     Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = null
                     Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = null
                 }
-                Toast.makeText(getApplication(), "Cannot open this article in Hindi!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    getApplication(),
+                    "Cannot open this article in Hindi!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }
     }
 
-    fun getArticleFromUrl(url:String) = newsRepository.getArticle(url)
+    fun getArticleFromUrl(url: String) = newsRepository.getArticle(url)
 
 
 }

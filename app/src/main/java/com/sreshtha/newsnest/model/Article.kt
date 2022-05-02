@@ -16,4 +16,4 @@ data class Article(
     @PrimaryKey
     val url: String,
     var urlToImage: String
-):Serializable
+) : Serializable

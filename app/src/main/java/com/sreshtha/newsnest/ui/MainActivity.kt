@@ -25,7 +25,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.database.ArticleDatabase
 import com.sreshtha.newsnest.databinding.ActivityMainBinding
-import com.sreshtha.newsnest.notification.NotifyWork
+import com.sreshtha.newsnest.work.NotifyWork
 import com.sreshtha.newsnest.repository.NewsRepository
 import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.utils.Constants.CHANNEL_ID

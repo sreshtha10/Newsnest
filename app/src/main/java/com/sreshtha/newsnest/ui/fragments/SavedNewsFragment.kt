@@ -1,7 +1,10 @@
 package com.sreshtha.newsnest.ui.fragments
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -25,17 +28,17 @@ import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
 class SavedNewsFragment : Fragment() {
-    private var binding:FragmentSavedNewsBinding? = null
+    private var binding: FragmentSavedNewsBinding? = null
     private lateinit var viewModel: NewsViewModel
-    private lateinit var adapter:NewsAdapter
-    private lateinit var mView:View
+    private lateinit var adapter: NewsAdapter
+    private lateinit var mView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSavedNewsBinding.inflate(inflater,container,false)
+        binding = FragmentSavedNewsBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -43,12 +46,12 @@ class SavedNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mView= view
+        mView = view
 
         viewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
 
-        if(adapter.differ.currentList.isEmpty()){
+        if (adapter.differ.currentList.isEmpty()) {
             binding?.emptyView?.visibility = View.VISIBLE
         }
 
@@ -70,22 +73,22 @@ class SavedNewsFragment : Fragment() {
         setUpSwipeToDelete()
 
 
-        viewModel.scrapedDataSavedNewsFragment.observe(viewLifecycleOwner){
+        viewModel.scrapedDataSavedNewsFragment.observe(viewLifecycleOwner) {
             //todo launch HindiDataFragment
-            if(it==null){
+            if (it == null) {
                 (activity as MainActivity).alertDialog?.cancel()
                 return@observe
             }
-            if(viewModel.isArticleOpenInHindi){
+            if (viewModel.isArticleOpenInHindi) {
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
             (activity as MainActivity).alertDialog?.cancel()
-            Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            Log.d(Constants.BREAKING_FRAGMENT, it.description)
             val bundle = Bundle().apply {
                 viewModel.isArticleOpenInHindi = true
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.SAVED_NEWS_FRAGMENT)
             }
 
             findNavController().navigate(
@@ -95,36 +98,40 @@ class SavedNewsFragment : Fragment() {
         }
 
         adapter.setOnItemClickListener {
-            if(it.urlToImage==null){
-                Toast.makeText(requireContext(),"Please wait.. Article is loading!", Toast.LENGTH_SHORT).show()
+            if (it.urlToImage == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please wait.. Article is loading!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            val sharedPreferences =(activity as MainActivity).getSharedPreferences(
-                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
-            if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
-                try{
+            val sharedPreferences = (activity as MainActivity).getSharedPreferences(
+                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE
+            )
+            if (!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG, false)) {
+                try {
                     (activity as MainActivity).alertDialog?.show()
-                    viewModel.getArticleFromUrl(it.url).observe(viewLifecycleOwner){
+                    viewModel.getArticleFromUrl(it.url).observe(viewLifecycleOwner) {
                         viewModel.scrapedDataSavedNewsFragment.value = it
                     }
                     return@setOnItemClickListener
-                }
-                catch (e:Exception){
-                    Log.d("HTML_CODE",e.toString())
+                } catch (e: Exception) {
+                    Log.d("HTML_CODE", e.toString())
                     //todo toast
-                    Snackbar.make(view,"Cannot Open Article in Hindi",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view, "Cannot Open Article in Hindi", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
 
             val bundle = Bundle().apply {
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.SAVED_NEWS_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.SAVED_NEWS_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_savedNewsFragment_to_articleFragment,
                 bundle
             )
         }
-
 
 
     }
@@ -136,7 +143,7 @@ class SavedNewsFragment : Fragment() {
     }
 
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         adapter = NewsAdapter()
         binding?.savedNewsRv?.adapter = adapter
         binding?.savedNewsRv?.layoutManager = LinearLayoutManager(activity)
@@ -144,18 +151,19 @@ class SavedNewsFragment : Fragment() {
     }
 
 
-    private fun setUpSwipeToDelete(){
+    private fun setUpSwipeToDelete() {
 
         val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT
-        ){
+        ) {
 
-            private val delIcon = ContextCompat.getDrawable(activity!!.baseContext, R.drawable.ic_delete)
+            private val delIcon =
+                ContextCompat.getDrawable(activity!!.baseContext, R.drawable.ic_delete)
             private val background = ColorDrawable()
             private val intrinsicHeight = delIcon?.intrinsicHeight
             private val intrinsicWidth = delIcon?.intrinsicWidth
-            private val backgroundColor = MaterialColors.getColor(mView,R.attr.colorPrimary)
+            private val backgroundColor = MaterialColors.getColor(mView, R.attr.colorPrimary)
             private val clearPaint = Paint().apply {
                 xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             }
@@ -186,20 +194,39 @@ class SavedNewsFragment : Fragment() {
                 val itemHeight = itemView.bottom - itemView.top
                 val isCanceled = dX == 0f && !isCurrentlyActive
 
-                if(isCanceled){
-                    clearCanvas(c,itemView.right+dX,itemView.top.toFloat(), itemView.right.toFloat(),itemView.bottom.toFloat())
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                if (isCanceled) {
+                    clearCanvas(
+                        c,
+                        itemView.right + dX,
+                        itemView.top.toFloat(),
+                        itemView.right.toFloat(),
+                        itemView.bottom.toFloat()
+                    )
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        dX,
+                        dY,
+                        actionState,
+                        isCurrentlyActive
+                    )
                     return
                 }
 
 
                 background.color = backgroundColor
-                background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                background.setBounds(
+                    itemView.right + dX.toInt(),
+                    itemView.top,
+                    itemView.right,
+                    itemView.bottom
+                )
                 background.draw(c)
 
                 // Calculate position of delete icon
                 val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
-                val deleteIconLeft = itemView.right- (2*intrinsicWidth!!)
+                val deleteIconLeft = itemView.right - (2 * intrinsicWidth!!)
                 val deleteIconRight = itemView.right - intrinsicWidth
                 val deleteIconBottom = deleteIconTop + intrinsicHeight
 
@@ -222,7 +249,13 @@ class SavedNewsFragment : Fragment() {
                 )
             }
 
-            private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+            private fun clearCanvas(
+                c: Canvas?,
+                left: Float,
+                top: Float,
+                right: Float,
+                bottom: Float
+            ) {
                 c?.drawRect(left, top, right, bottom, clearPaint)
             }
 
@@ -234,7 +267,7 @@ class SavedNewsFragment : Fragment() {
     }
 
 
-    private fun deleteArticle(position: Int){
+    private fun deleteArticle(position: Int) {
         val article = adapter.differ.currentList[position]
         viewModel.delete(article)
         Snackbar.make(
@@ -242,7 +275,7 @@ class SavedNewsFragment : Fragment() {
             "Article Deleted",
             Snackbar.LENGTH_SHORT
         ).apply {
-            setAction("Undo"){
+            setAction("Undo") {
                 viewModel.insert(article)
             }
             show()

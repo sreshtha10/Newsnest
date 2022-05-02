@@ -8,28 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
-import com.google.mlkit.nl.translate.TranslatorOptions
-import com.sreshtha.newsnest.R
 import com.sreshtha.newsnest.databinding.FragmentSettingsBinding
 import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.LocaleHelper
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
-class SettingsFragment: Fragment() {
-    private var binding:FragmentSettingsBinding?=null
+class SettingsFragment : Fragment() {
+    private var binding: FragmentSettingsBinding? = null
     private lateinit var viewModel: NewsViewModel
-    private var builder :AlertDialog?= null
-    private var englishHindiTranslator: Translator?=null
-    companion object{
-        const val STRING_PREF_NAME="USER_SETTINGS"
+    private var builder: AlertDialog? = null
+    private var englishHindiTranslator: Translator? = null
+
+    companion object {
+        const val STRING_PREF_NAME = "USER_SETTINGS"
         const val STRING_IS_DARK_MODE = "IS_DARK_MODE"
         const val STRING_IS_LANG_ENG = "IS_LANG_ENG"
     }
@@ -39,7 +34,7 @@ class SettingsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingsBinding.inflate(inflater,container,false)
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -48,57 +43,56 @@ class SettingsFragment: Fragment() {
 
         viewModel = (activity as MainActivity).viewModel
 
-        val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
+        val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPrefs?.edit()
-        binding?.switchDarkTheme?.isChecked = sharedPrefs?.getBoolean(STRING_IS_DARK_MODE,false) == true
+        binding?.switchDarkTheme?.isChecked =
+            sharedPrefs?.getBoolean(STRING_IS_DARK_MODE, false) == true
 
         binding?.switchDarkTheme?.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
-                true ->{
+                true -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-                    editor?.putBoolean(STRING_IS_DARK_MODE,true)
+                    editor?.putBoolean(STRING_IS_DARK_MODE, true)
                     editor?.apply()
 
                 }
                 false -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    editor?.putBoolean(STRING_IS_DARK_MODE,false)
+                    editor?.putBoolean(STRING_IS_DARK_MODE, false)
                     editor?.apply()
                 }
 
             }
         }
 
-        if(sharedPrefs?.getBoolean(STRING_IS_LANG_ENG,true) == true){
+        if (sharedPrefs?.getBoolean(STRING_IS_LANG_ENG, true) == true) {
             binding?.spLang?.setSelection(0)
-        }
-        else{
+        } else {
             binding?.spLang?.setSelection(1)
         }
 
 
         var isInitialCall = true
-        binding?.spLang?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding?.spLang?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                Log.d("DEBUG","sp selection called")
-                if(isInitialCall){
-                    isInitialCall=false
+                Log.d("DEBUG", "sp selection called")
+                if (isInitialCall) {
+                    isInitialCall = false
                     return
                 }
-                if(parent?.getItemAtPosition(position).toString() == "English"){
-                    LocaleHelper.setLocale(activity,"en")
-                    editor?.putBoolean(STRING_IS_LANG_ENG,true)?.apply()
+                if (parent?.getItemAtPosition(position).toString() == "English") {
+                    LocaleHelper.setLocale(activity, "en")
+                    editor?.putBoolean(STRING_IS_LANG_ENG, true)?.apply()
                     (activity as MainActivity).restartActivity()
-                }
-                else{
-                    LocaleHelper.setLocale(activity,"hi")
-                    editor?.putBoolean(STRING_IS_LANG_ENG,false)?.apply()
+                } else {
+                    LocaleHelper.setLocale(activity, "hi")
+                    editor?.putBoolean(STRING_IS_LANG_ENG, false)?.apply()
                     (activity as MainActivity).restartActivity()
                     //setUpTranslator()
                 }
@@ -117,7 +111,6 @@ class SettingsFragment: Fragment() {
         binding = null
 
     }
-
 
 
 }

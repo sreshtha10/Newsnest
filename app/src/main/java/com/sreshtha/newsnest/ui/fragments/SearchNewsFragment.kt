@@ -33,8 +33,8 @@ class SearchNewsFragment : Fragment() {
     private var isLoading = false
     private var isScrolling = false
     private var isLastPage = false
-    private var currSorting:String = "newest"
-    private var currQuery:String=""
+    private var currSorting: String = "newest"
+    private var currQuery: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,22 +55,22 @@ class SearchNewsFragment : Fragment() {
 
         setUpSpinner()
 
-        viewModel.scrapedDataSearchNewsFragment.observe(viewLifecycleOwner){
+        viewModel.scrapedDataSearchNewsFragment.observe(viewLifecycleOwner) {
             //todo launch HindiDataFragment
-            if(it==null){
+            if (it == null) {
                 (activity as MainActivity).alertDialog?.cancel()
                 return@observe
             }
-            if(viewModel.isArticleOpenInHindi){
+            if (viewModel.isArticleOpenInHindi) {
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
             (activity as MainActivity).alertDialog?.cancel()
-            Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            Log.d(Constants.BREAKING_FRAGMENT, it.description)
             val bundle = Bundle().apply {
                 viewModel.isArticleOpenInHindi = true
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.SEARCH_NEWS_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.SEARCH_NEWS_FRAGMENT)
             }
 
             findNavController().navigate(
@@ -81,28 +81,33 @@ class SearchNewsFragment : Fragment() {
 
 
         adapter.setOnItemClickListener {
-            if(it.urlToImage==null){
-                Toast.makeText(requireContext(),"Please wait.. Article is loading!", Toast.LENGTH_SHORT).show()
+            if (it.urlToImage == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please wait.. Article is loading!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            val sharedPreferences =(activity as MainActivity).getSharedPreferences(
-                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
-            if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
-                try{
+            val sharedPreferences = (activity as MainActivity).getSharedPreferences(
+                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE
+            )
+            if (!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG, false)) {
+                try {
                     (activity as MainActivity).alertDialog?.show()
-                    viewModel.renderDataFromUrl(it.url,it,Constants.SEARCH_NEWS_FRAGMENT)
+                    viewModel.renderDataFromUrl(it.url, it, Constants.SEARCH_NEWS_FRAGMENT)
                     return@setOnItemClickListener
-                }
-                catch (e:Exception){
-                    Log.d("HTML_CODE",e.toString())
+                } catch (e: Exception) {
+                    Log.d("HTML_CODE", e.toString())
                     //todo toast
-                    Snackbar.make(view,"Cannot Open Article in Hindi",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view, "Cannot Open Article in Hindi", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
 
 
             val bundle = Bundle().apply {
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.SEARCH_NEWS_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.SEARCH_NEWS_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_searchNewsFragment_to_articleFragment,
@@ -138,16 +143,16 @@ class SearchNewsFragment : Fragment() {
 
         }
 
-        var job:Job?=null
+        var job: Job? = null
 
         binding?.searchViewNews?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-               return false
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText.isNullOrEmpty()){
+                if (newText.isNullOrEmpty()) {
                     return false
                 }
 
@@ -165,7 +170,7 @@ class SearchNewsFragment : Fragment() {
                             viewModel.searchSortByPopularity(newText)
 
                         }
-                        "relevancy" ->{
+                        "relevancy" -> {
                             viewModel.searchSortByRelevancy(newText)
                         }
                     }
@@ -177,10 +182,10 @@ class SearchNewsFragment : Fragment() {
             }
         })
 
-        binding?.searchViewNews?.isSubmitButtonEnabled=false
+        binding?.searchViewNews?.isSubmitButtonEnabled = false
 
 
-        binding?.spinnerSort?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding?.spinnerSort?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -188,13 +193,13 @@ class SearchNewsFragment : Fragment() {
                 id: Long
             ) {
                 val query = binding?.searchViewNews?.query.toString()
-                if(query.isEmpty()){
+                if (query.isEmpty()) {
                     return
                 }
                 currQuery = query
                 viewModel.totalSearchNewsData = null
                 viewModel.searchNewsPage = 1
-                when(parent?.getItemAtPosition(position).toString().lowercase()){
+                when (parent?.getItemAtPosition(position).toString().lowercase()) {
                     "newest" -> {
                         viewModel.searchSortByNewest(query)
                         currSorting = "newest"
@@ -214,8 +219,6 @@ class SearchNewsFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         }
-
-
 
 
     }
@@ -245,14 +248,12 @@ class SearchNewsFragment : Fragment() {
     }
 
 
-
-
-    private val customScrollListener = object : RecyclerView.OnScrollListener(){
+    private val customScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
-                Log.d("TAG","Scrolling")
+                Log.d("TAG", "Scrolling")
             }
         }
 
@@ -265,20 +266,20 @@ class SearchNewsFragment : Fragment() {
             val totalItemCount = layoutManager.itemCount
             val firstVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
 
-            if(!isLoading && !isLastPage){
-                if(visibleItemCount+firstVisibleItemCount>=totalItemCount &&firstVisibleItemCount>=0 && totalItemCount>= Constants.PAGE_SIZE){
+            if (!isLoading && !isLastPage) {
+                if (visibleItemCount + firstVisibleItemCount >= totalItemCount && firstVisibleItemCount >= 0 && totalItemCount >= Constants.PAGE_SIZE) {
                     // load current function
-                    when(currSorting){
-                        "newest" ->{
+                    when (currSorting) {
+                        "newest" -> {
                             viewModel.searchSortByNewest(query = currQuery)
-                            Log.d("TAG","Last")
+                            Log.d("TAG", "Last")
                         }
-                        "popularity" ->{
+                        "popularity" -> {
                             viewModel.searchSortByPopularity(query = currQuery)
-                            Log.d("TAG","Last")
+                            Log.d("TAG", "Last")
                         }
 
-                        "relevancy" ->{
+                        "relevancy" -> {
                             viewModel.searchSortByRelevancy(query = currQuery)
                         }
 
@@ -290,9 +291,9 @@ class SearchNewsFragment : Fragment() {
     }
 
 
-    private fun setUpSpinner(){
+    private fun setUpSpinner() {
         val arr = resources.getStringArray(R.array.sortBy)
-        val sortAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,arr) }
+        val sortAdapter = activity?.let { ArrayAdapter(it, R.layout.custom_spinner, arr) }
         binding?.spinnerSort?.adapter = sortAdapter
     }
 }

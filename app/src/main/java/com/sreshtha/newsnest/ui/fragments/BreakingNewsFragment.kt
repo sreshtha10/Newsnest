@@ -28,15 +28,14 @@ import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
 class BreakingNewsFragment : Fragment() {
 
-    private var binding:FragmentBreakingNewsBinding? = null
-    private lateinit var viewModel : NewsViewModel
-    private lateinit var adapter:NewsAdapter
+    private var binding: FragmentBreakingNewsBinding? = null
+    private lateinit var viewModel: NewsViewModel
+    private lateinit var adapter: NewsAdapter
     private var isLoading = false
     private var isScrolling = false
     private var isLastPage = false
-    private var currCategory:String = "general"
-    private var currRegion:String="global"
-
+    private var currCategory: String = "general"
+    private var currRegion: String = "global"
 
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class BreakingNewsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBreakingNewsBinding.inflate(inflater,container,false)
+        binding = FragmentBreakingNewsBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -58,23 +57,23 @@ class BreakingNewsFragment : Fragment() {
         setUpSpinners()
 
 
-        viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
+        viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner) {
             //todo launch HindiDataFragment
-            if(it==null){
+            if (it == null) {
                 (activity as MainActivity).alertDialog?.cancel()
                 return@observe
             }
-            if(viewModel.isArticleOpenInHindi){
+            if (viewModel.isArticleOpenInHindi) {
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
             (activity as MainActivity).alertDialog?.cancel()
-            Log.d(Constants.BREAKING_FRAGMENT,it.description)
+            Log.d(Constants.BREAKING_FRAGMENT, it.description)
             Log.d("BACK__", "observer is called")
             val bundle = Bundle().apply {
                 viewModel.isArticleOpenInHindi = true
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.BREAKING_FRAGMENT)
             }
 
             findNavController().navigate(
@@ -88,28 +87,33 @@ class BreakingNewsFragment : Fragment() {
 
         adapter.setOnItemClickListener {
             // if user clicks on article before image is loaded!
-            if(it.urlToImage==null){
-                Toast.makeText(requireContext(),"Please wait.. Article is loading!", Toast.LENGTH_SHORT).show()
+            if (it.urlToImage == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please wait.. Article is loading!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            val sharedPreferences =(activity as MainActivity).getSharedPreferences(
-                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
-            if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
-                try{
+            val sharedPreferences = (activity as MainActivity).getSharedPreferences(
+                NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE
+            )
+            if (!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG, false)) {
+                try {
                     (activity as MainActivity).alertDialog?.show()
-                    viewModel.renderDataFromUrl(it.url,it,Constants.BREAKING_FRAGMENT)
+                    viewModel.renderDataFromUrl(it.url, it, Constants.BREAKING_FRAGMENT)
                     return@setOnItemClickListener
-                }
-                catch (e:Exception){
-                    Log.d("HTML_CODE",e.toString())
+                } catch (e: Exception) {
+                    Log.d("HTML_CODE", e.toString())
                     //todo toast
-                    Snackbar.make(view,"Cannot Open Article in Hindi",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view, "Cannot Open Article in Hindi", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
 
             val bundle = Bundle().apply {
-                putSerializable(Constants.ARTICLE_TAG,it)
-                putString(Constants.TYPE_TAG,Constants.BREAKING_FRAGMENT)
+                putSerializable(Constants.ARTICLE_TAG, it)
+                putString(Constants.TYPE_TAG, Constants.BREAKING_FRAGMENT)
             }
             findNavController().navigate(
                 R.id.action_breakingNewsFragment_to_articleFragment,
@@ -122,8 +126,8 @@ class BreakingNewsFragment : Fragment() {
             when (it) {
                 is Resource.Success<NewsModel> -> {
                     hideProgressBar()
-                    Log.d("TRANSLATE__","Observer is called")
-                    it.data?.let { newsModel->
+                    Log.d("TRANSLATE__", "Observer is called")
+                    it.data?.let { newsModel ->
                         val newList: List<Article> = newsModel.articles.toList()
                         //val sharedPrefs = context?.getSharedPreferences(STRING_PREF_NAME, Context.MODE_PRIVATE)
 
@@ -151,10 +155,10 @@ class BreakingNewsFragment : Fragment() {
                             return@observe
                         }*/
 
-                            //Log.d("TRANSLATE__",newList.toString())
-                            adapter.differ.submitList(newList)
-                            val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
-                            isLastPage = viewModel.breakingNewsPage == totalPages
+                        //Log.d("TRANSLATE__",newList.toString())
+                        adapter.differ.submitList(newList)
+                        val totalPages = newsModel.totalResults / Constants.PAGE_SIZE + 2
+                        isLastPage = viewModel.breakingNewsPage == totalPages
 
 
                     }
@@ -181,55 +185,57 @@ class BreakingNewsFragment : Fragment() {
 
 
 
-        binding?.categorySpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val category = parent?.getItemAtPosition(position).toString().lowercase()
-                currCategory = category
-                val region = binding?.breakingNewsSpinner?.selectedItem.toString().lowercase()
-                currRegion = region
-                viewModel.breakingNewsPage = 1
-                viewModel.totalBreakingNewsData = null
-                when(region){
-                    "global" -> viewModel.getWorldWideNews(category=category)
-                    "india" -> viewModel.getIndianHeadlines(category=category)
+        binding?.categorySpinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val category = parent?.getItemAtPosition(position).toString().lowercase()
+                    currCategory = category
+                    val region = binding?.breakingNewsSpinner?.selectedItem.toString().lowercase()
+                    currRegion = region
+                    viewModel.breakingNewsPage = 1
+                    viewModel.totalBreakingNewsData = null
+                    when (region) {
+                        "global" -> viewModel.getWorldWideNews(category = category)
+                        "india" -> viewModel.getIndianHeadlines(category = category)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
 
+        binding?.breakingNewsSpinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val region = parent?.getItemAtPosition(position).toString().lowercase()
+                    currRegion = region
+                    val category = binding?.categorySpinner?.selectedItem.toString().lowercase()
+                    currCategory = category
+                    viewModel.breakingNewsPage = 1
+                    viewModel.totalBreakingNewsData = null
+                    when (region) {
+                        "global" -> viewModel.getWorldWideNews(category = category)
+                        "india" -> viewModel.getIndianHeadlines(category = category)
+                    }
 
-        binding?.breakingNewsSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val region = parent?.getItemAtPosition(position).toString().lowercase()
-                currRegion = region
-                val category = binding?.categorySpinner?.selectedItem.toString().lowercase()
-                currCategory = category
-                viewModel.breakingNewsPage = 1
-                viewModel.totalBreakingNewsData = null
-                when(region){
-                    "global" -> viewModel.getWorldWideNews(category=category)
-                    "india" -> viewModel.getIndianHeadlines(category=category)
                 }
 
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
 
     }
 
@@ -239,7 +245,7 @@ class BreakingNewsFragment : Fragment() {
     }
 
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         adapter = NewsAdapter()
         binding?.breakingNewsRv?.adapter = adapter
         binding?.breakingNewsRv?.layoutManager = LinearLayoutManager(activity)
@@ -248,23 +254,23 @@ class BreakingNewsFragment : Fragment() {
     }
 
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         binding?.breakingNewsPb?.visibility = View.INVISIBLE
         isLoading = false
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding?.breakingNewsPb?.visibility = View.VISIBLE
         isLoading = true
     }
 
 
-    private val customScrollListener = object : RecyclerView.OnScrollListener(){
+    private val customScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
-                Log.d("TAG","Scrolling")
+                Log.d("TAG", "Scrolling")
             }
         }
 
@@ -277,17 +283,17 @@ class BreakingNewsFragment : Fragment() {
             val totalItemCount = layoutManager.itemCount
             val firstVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
 
-            if(!isLoading && !isLastPage){
-                if(visibleItemCount+firstVisibleItemCount>=totalItemCount &&firstVisibleItemCount>=0 && totalItemCount>= Constants.PAGE_SIZE){
+            if (!isLoading && !isLastPage) {
+                if (visibleItemCount + firstVisibleItemCount >= totalItemCount && firstVisibleItemCount >= 0 && totalItemCount >= Constants.PAGE_SIZE) {
                     // load current function
-                    when(currRegion){
-                        "india" ->{
+                    when (currRegion) {
+                        "india" -> {
                             viewModel.getIndianHeadlines(category = currCategory)
-                            Log.d("TAG","Last")
+                            Log.d("TAG", "Last")
                         }
-                        "global" ->{
+                        "global" -> {
                             viewModel.getWorldWideNews(category = currCategory)
-                            Log.d("TAG","Last")
+                            Log.d("TAG", "Last")
                         }
                     }
                     isScrolling = false
@@ -297,13 +303,14 @@ class BreakingNewsFragment : Fragment() {
     }
 
 
-    private fun setUpSpinners(){
+    private fun setUpSpinners() {
         val regionArr = resources.getStringArray(R.array.BreakingNewsSpinnerArr)
-        val regionAdapter = activity?.let{ArrayAdapter(it,R.layout.custom_spinner,regionArr)}
+        val regionAdapter = activity?.let { ArrayAdapter(it, R.layout.custom_spinner, regionArr) }
         binding?.breakingNewsSpinner?.adapter = regionAdapter
 
         val categoryArr = resources.getStringArray(R.array.categories)
-        val categoryAdapter = activity?.let { ArrayAdapter(it,R.layout.custom_spinner,categoryArr) }
+        val categoryAdapter =
+            activity?.let { ArrayAdapter(it, R.layout.custom_spinner, categoryArr) }
         binding?.categorySpinner?.adapter = categoryAdapter
     }
 

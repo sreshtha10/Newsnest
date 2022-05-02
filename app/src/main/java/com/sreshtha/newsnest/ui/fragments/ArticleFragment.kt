@@ -22,17 +22,17 @@ import com.sreshtha.newsnest.viewmodel.NewsViewModel
 class ArticleFragment : Fragment() {
 
     private lateinit var viewModel: NewsViewModel
-    private var binding:FragmentArticleBinding?= null
-    val args:ArticleFragmentArgs by navArgs()
-    private lateinit var article:Article
-    private lateinit var sourceType:String
+    private var binding: FragmentArticleBinding? = null
+    val args: ArticleFragmentArgs by navArgs()
+    private lateinit var article: Article
+    private lateinit var sourceType: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentArticleBinding.inflate(inflater,container,false)
+        binding = FragmentArticleBinding.inflate(inflater, container, false)
         viewModel = (activity as MainActivity).viewModel
         article = args.article
         sourceType = args.type
@@ -44,20 +44,20 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val bottomNav = (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNav =
+            (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.visibility = View.GONE
 
 
-        Log.d(Constants.ARTICLE_TAG,sourceType+" "+article.toString())
+        Log.d(Constants.ARTICLE_TAG, sourceType + " " + article.toString())
 
 
-
-        val onBackPressedCallback  = object:OnBackPressedCallback(true){
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 bottomNav.visibility = View.VISIBLE
                 //todo navigate
                 Constants.apply {
-                    when(sourceType){
+                    when (sourceType) {
                         BREAKING_FRAGMENT -> findNavController().navigate(R.id.action_articleFragment_to_breakingNewsFragment)
                         SAVED_NEWS_FRAGMENT -> findNavController().navigate(R.id.action_articleFragment_to_savedNewsFragment)
                         SEARCH_NEWS_FRAGMENT -> findNavController().navigate(R.id.action_articleFragment_to_breakingNewsFragment)
@@ -66,20 +66,23 @@ class ArticleFragment : Fragment() {
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
 
 
 
 
         binding?.webView?.apply {
-                webViewClient = WebViewClient()
-                loadUrl(article.url)
+            webViewClient = WebViewClient()
+            loadUrl(article.url)
         }
 
         binding?.fab?.setOnClickListener {
             viewModel.insert(article)
-            Snackbar.make(view,"Article Saved Successfully",Snackbar.LENGTH_SHORT).apply {
-                setAction("Undo"){
+            Snackbar.make(view, "Article Saved Successfully", Snackbar.LENGTH_SHORT).apply {
+                setAction("Undo") {
                     viewModel.delete(article)
                 }
                 show()
@@ -92,8 +95,6 @@ class ArticleFragment : Fragment() {
         super.onDestroy()
         binding = null
     }
-
-
 
 
 }

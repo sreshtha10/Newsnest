@@ -1,4 +1,4 @@
-package com.sreshtha.newsnest.notification
+package com.sreshtha.newsnest.work
 
 import android.app.NotificationManager
 import android.content.Context
@@ -13,10 +13,6 @@ import com.sreshtha.newsnest.utils.Constants.NOTIFICATION_ID_TAG
 
 
 class NotifyWork(context: Context, parameters: WorkerParameters): Worker(context,parameters){
-
-    companion object{
-
-    }
 
     override fun doWork(): Result {
         val id = inputData.getLong(NOTIFICATION_ID_TAG,0).toInt()

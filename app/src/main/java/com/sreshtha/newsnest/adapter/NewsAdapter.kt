@@ -16,15 +16,16 @@ import com.sreshtha.newsnest.model.Article
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
 
-    companion object{
-        const val STRING_PREF_NAME="USER_SETTINGS"
+    companion object {
+        const val STRING_PREF_NAME = "USER_SETTINGS"
         const val STRING_IS_LANG_ENG = "IS_LANG_ENG"
     }
 
 
-    inner class BreakingNewsViewHolder(val binding:ItemArticlePreviewBinding):RecyclerView.ViewHolder(binding.root)
+    inner class BreakingNewsViewHolder(val binding: ItemArticlePreviewBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallback = object:DiffUtil.ItemCallback<Article>(){
+    private val diffCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
         }
@@ -34,7 +35,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
         }
     }
 
-    val differ = AsyncListDiffer(this,diffCallback)
+    val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
 
@@ -51,11 +52,11 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
         holder.binding.apply {
             tvDate.text = differ.currentList[position].publishedAt
             val sharedPreferences = root.context.getSharedPreferences(
-                STRING_PREF_NAME, Context.MODE_PRIVATE)
-            if(!sharedPreferences.getBoolean(STRING_IS_LANG_ENG,false)){
-                translateString(holder,position,differ.currentList[position].title)
-            }
-            else{
+                STRING_PREF_NAME, Context.MODE_PRIVATE
+            )
+            if (!sharedPreferences.getBoolean(STRING_IS_LANG_ENG, false)) {
+                translateString(holder, position, differ.currentList[position].title)
+            } else {
                 tvTitle.text = differ.currentList[position].title
             }
 
@@ -67,11 +68,10 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
 
 
         holder.binding.root.setOnClickListener {
-            try{
+            try {
                 onItemClickListener?.let { it(differ.currentList[position]) }
-            }
-            catch (e:Exception){
-                Log.d("TAG","Article cannot be opened")
+            } catch (e: Exception) {
+                Log.d("TAG", "Article cannot be opened")
                 //show snackbar
             }
 
@@ -85,15 +85,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
     }
 
 
-    private var onItemClickListener:((Article)->Unit)? =null
+    private var onItemClickListener: ((Article) -> Unit)? = null
 
-    fun setOnItemClickListener(listener:(Article)->Unit){
-        onItemClickListener= listener
+    fun setOnItemClickListener(listener: (Article) -> Unit) {
+        onItemClickListener = listener
     }
 
 
-
-    private fun translateString(holder: BreakingNewsViewHolder, position: Int,string:String){
+    private fun translateString(holder: BreakingNewsViewHolder, position: Int, string: String) {
         val options = TranslatorOptions.Builder()
             .setSourceLanguage(TranslateLanguage.ENGLISH)
             .setTargetLanguage(TranslateLanguage.HINDI)
@@ -112,10 +111,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
                         tvTitle.text = string
                     }
                 }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             holder.binding.tvTitle.text = string
-            Log.d("TRANSLATION_ERROR",e.toString())
+            Log.d("TRANSLATION_ERROR", e.toString())
             //todo toast
         }
     }

@@ -18,38 +18,39 @@ import com.sreshtha.newsnest.ui.MainActivity
 import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
-class HindiArticleFragment:Fragment() {
+class HindiArticleFragment : Fragment() {
 
-    private var hindiArticleBinding : FragmentHindiArticleBinding?=null
-    val args:HindiArticleFragmentArgs by navArgs()
+    private var hindiArticleBinding: FragmentHindiArticleBinding? = null
+    val args: HindiArticleFragmentArgs by navArgs()
     private lateinit var article: Article
-    private lateinit var sourceType:String
-    private lateinit var viewModel:NewsViewModel
+    private lateinit var sourceType: String
+    private lateinit var viewModel: NewsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        hindiArticleBinding = FragmentHindiArticleBinding.inflate(inflater,container,false)
+        hindiArticleBinding = FragmentHindiArticleBinding.inflate(inflater, container, false)
         viewModel = (activity as MainActivity).viewModel
         article = args.article
         sourceType = args.type
-        return  hindiArticleBinding?.root
+        return hindiArticleBinding?.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomNav = (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNav =
+            (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.visibility = View.GONE
 
-        val onBackPressedCallback  = object: OnBackPressedCallback(true){
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 bottomNav.visibility = View.VISIBLE
                 Constants.apply {
-                    when(sourceType){
+                    when (sourceType) {
                         BREAKING_FRAGMENT -> findNavController().navigate(R.id.action_hindiArticleFragment_to_breakingNewsFragment)
                         SAVED_NEWS_FRAGMENT -> findNavController().navigate(R.id.action_hindiArticleFragment_to_savedNewsFragment)
                         SEARCH_NEWS_FRAGMENT -> findNavController().navigate(R.id.action_hindiArticleFragment_to_breakingNewsFragment)
@@ -58,19 +59,22 @@ class HindiArticleFragment:Fragment() {
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
 
         hindiArticleBinding?.apply {
             tvNewsText.text = article.description
-            tvTitle.text= article.title
+            tvTitle.text = article.title
             Glide.with(view).load(article.urlToImage).into(ivImage)
         }
 
 
         hindiArticleBinding?.fab?.setOnClickListener {
             viewModel.insert(article)
-            Snackbar.make(view,"Article Saved Successfully", Snackbar.LENGTH_SHORT).apply {
-                setAction("Undo"){
+            Snackbar.make(view, "Article Saved Successfully", Snackbar.LENGTH_SHORT).apply {
+                setAction("Undo") {
                     viewModel.delete(article)
                 }
                 show()
