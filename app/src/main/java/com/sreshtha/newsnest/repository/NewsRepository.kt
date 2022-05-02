@@ -37,4 +37,6 @@ class NewsRepository(private val database:ArticleDatabase){
 
     fun getAllSavedArticles() = database.getArticleDao().getAllSavedArticles()
 
+    fun getArticle(url:String) = database.getArticleDao().getArticle(url)
+
 }
