@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,22 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/ic_lang"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_notification"
-        app:tint="?colorPrimary" />
-
-
-    <ImageView
-        android:id="@+id/iv_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/ic_notification"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_night"
         app:tint="?colorPrimary" />
@@ -83,41 +68,16 @@
 
 
     <TextView
-        android:id="@+id/tv_notifications"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/regular"
-        android:text="@string/notifications"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_notification"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dark_theme" />
-
-
-    <TextView
         android:id="@+id/tv_lang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="@font/regular"
         android:text="@string/language"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/iv_lang"
-        app:layout_constraintTop_toBottomOf="@+id/tv_notifications" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_notifications"
-        android:layout_width="48dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/switch_dark_theme" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dark_theme" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -135,6 +95,20 @@
         android:entries="@array/lang"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_lang"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/label_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
+        android:fontFamily="@font/heading"
+        android:gravity="center"
+        android:text="@string/made_by_sreshtha"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

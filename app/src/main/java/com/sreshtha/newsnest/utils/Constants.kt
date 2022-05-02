@@ -25,6 +25,7 @@ object Constants {
     const val NOTIFICATION_ID = 0
     const val NOTIFICATION_ID_TAG = "newsnest_notification_id"
     const val NOTIFICATION_WORK = "newsnest_notification_work"
+    const val GITHUB_URL="https://github.com/sreshtha10/Newsnest"
 
     fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap? {
         var drawable = ContextCompat.getDrawable(context, drawableId)

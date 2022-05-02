@@ -11,6 +11,7 @@
     <string name="dark_theme">Dark Theme</string>
     <string name="notifications">Notifications</string>
     <string name="language">Language</string>
+    <string name="made_by_sreshtha"><u>Made by Sreshtha Mehrotra</u></string>
     <array name="BreakingNewsSpinnerArr">
         <item>Global</item>
         <item>India</item>

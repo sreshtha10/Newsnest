@@ -2,6 +2,8 @@ package com.sreshtha.newsnest.ui.fragments
 
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.google.mlkit.nl.translate.Translator
 import com.sreshtha.newsnest.databinding.FragmentSettingsBinding
 import com.sreshtha.newsnest.ui.MainActivity
+import com.sreshtha.newsnest.utils.Constants
 import com.sreshtha.newsnest.utils.LocaleHelper
 import com.sreshtha.newsnest.viewmodel.NewsViewModel
 
@@ -103,6 +106,11 @@ class SettingsFragment : Fragment() {
             }
         }
 
+
+        binding?.labelFooter?.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GITHUB_URL))
+            startActivity(intent)
+        }
 
     }
 
