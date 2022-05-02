@@ -24,6 +24,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+//todo save news impl in hindi translations
+// notifications via work manager
+// fix theme and lang change bugs
 
 class MainActivity : AppCompatActivity() {
 
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setLoadingDialog(){
+    private fun setLoadingDialog(){
         val loadingView = layoutInflater.inflate(R.layout.custom_loading_alert_diaglog,null)
         alertDialog = AlertDialog.Builder(this).create()
         alertDialog?.setView(loadingView)
