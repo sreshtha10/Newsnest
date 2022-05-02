@@ -198,6 +198,8 @@ class NewsViewModel(
 
 
 
+
+
     private fun hasInternetConnection():Boolean{
         val connectivityManager = getApplication<MyApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
@@ -278,6 +280,8 @@ class NewsViewModel(
         }
     }
 
+
+    fun getArticleFromUrl(url:String) = newsRepository.getArticle(url)
 
 
 }
