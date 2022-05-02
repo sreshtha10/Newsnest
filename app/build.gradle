@@ -99,4 +99,7 @@ dependencies {
     //Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
 
+    //work manager
+    implementation 'android.work:work-runtime:2.1.0-alpha02'
+
 }

@@ -280,7 +280,6 @@ class NewsViewModel(
         }
     }
 
-
     fun getArticleFromUrl(url:String) = newsRepository.getArticle(url)
 
 
