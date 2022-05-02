@@ -60,11 +60,15 @@ class BreakingNewsFragment : Fragment() {
 
         viewModel.scrapedDataBreakingNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
-
+            if(it==null){
+                (activity as MainActivity).alertDialog?.cancel()
+                return@observe
+            }
             if(viewModel.isArticleOpenInHindi){
                 viewModel.isArticleOpenInHindi = false
                 return@observe
             }
+            (activity as MainActivity).alertDialog?.cancel()
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
             Log.d("BACK__", "observer is called")
             val bundle = Bundle().apply {
@@ -92,6 +96,7 @@ class BreakingNewsFragment : Fragment() {
                 NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
             if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
                 try{
+                    (activity as MainActivity).alertDialog?.show()
                     viewModel.renderDataFromUrl(it.url,it,Constants.BREAKING_FRAGMENT)
                     return@setOnItemClickListener
                 }

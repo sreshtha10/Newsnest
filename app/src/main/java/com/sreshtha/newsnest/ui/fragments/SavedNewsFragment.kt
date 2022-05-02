@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -71,6 +72,14 @@ class SavedNewsFragment : Fragment() {
 
         viewModel.scrapedDataSavedNewsFragment.observe(viewLifecycleOwner){
             //todo launch HindiDataFragment
+            if(it==null){
+                (activity as MainActivity).alertDialog?.cancel()
+                return@observe
+            }
+            if(viewModel.isArticleOpenInHindi){
+                viewModel.isArticleOpenInHindi = false
+                return@observe
+            }
             Log.d(Constants.BREAKING_FRAGMENT,it.description)
             val bundle = Bundle().apply {
                 putSerializable(Constants.ARTICLE_TAG,it)
@@ -84,11 +93,14 @@ class SavedNewsFragment : Fragment() {
         }
 
         adapter.setOnItemClickListener {
-
+            if(it.urlToImage==null){
+                Toast.makeText(requireContext(),"Please wait.. Article is loading!", Toast.LENGTH_SHORT).show()
+            }
             val sharedPreferences =(activity as MainActivity).getSharedPreferences(
                 NewsAdapter.STRING_PREF_NAME, Context.MODE_PRIVATE)
             if(!sharedPreferences.getBoolean(NewsAdapter.STRING_IS_LANG_ENG,false)){
                 try{
+                    (activity as MainActivity).alertDialog?.show()
                     viewModel.renderDataFromUrl(it.url,it,Constants.SAVED_NEWS_FRAGMENT)
                     return@setOnItemClickListener
                 }

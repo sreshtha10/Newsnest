@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: NewsViewModel
+    var alertDialog:AlertDialog?=null
 
     companion object{
         const val STRING_PREF_NAME="USER_SETTINGS"
@@ -46,6 +47,8 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(binding.root)
+
+        setLoadingDialog()
 
         val sharedPreferences = this.getSharedPreferences(STRING_PREF_NAME,Context.MODE_PRIVATE)
         if(sharedPreferences.getBoolean(STRING_IS_DARK_MODE,false)){
@@ -92,6 +95,14 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
+    }
+
+
+    fun setLoadingDialog(){
+        val loadingView = layoutInflater.inflate(R.layout.custom_loading_alert_diaglog,null)
+        alertDialog = AlertDialog.Builder(this).create()
+        alertDialog?.setView(loadingView)
+        alertDialog?.setCancelable(false)
     }
 
 }

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
@@ -38,9 +37,9 @@ class NewsViewModel(
     var searchNewsPage =1
     var totalBreakingNewsData:NewsModel? = null
     var totalSearchNewsData:NewsModel?=null
-    val scrapedDataBreakingNewsFragment:MutableLiveData<Article> = MutableLiveData()
-    val scrapedDataSavedNewsFragment:MutableLiveData<Article> = MutableLiveData()
-    val scrapedDataSearchNewsFragment:MutableLiveData<Article> = MutableLiveData()
+    val scrapedDataBreakingNewsFragment:MutableLiveData<Article?> = MutableLiveData()
+    val scrapedDataSavedNewsFragment:MutableLiveData<Article?> = MutableLiveData()
+    val scrapedDataSearchNewsFragment:MutableLiveData<Article?> = MutableLiveData()
     var isArticleOpenInHindi:Boolean = false
 
 
@@ -268,6 +267,11 @@ class NewsViewModel(
             }
             catch (e:Exception){
                 Log.d(Constants.NEWS_VIEW_MODEL, e.toString())
+                when(type){
+                    Constants.BREAKING_FRAGMENT -> scrapedDataBreakingNewsFragment.value = null
+                    Constants.SEARCH_NEWS_FRAGMENT -> scrapedDataSearchNewsFragment.value = null
+                    Constants.SAVED_NEWS_FRAGMENT -> scrapedDataSavedNewsFragment.value = null
+                }
                 Toast.makeText(getApplication(), "Cannot open this article in Hindi!",Toast.LENGTH_SHORT).show()
             }
 
