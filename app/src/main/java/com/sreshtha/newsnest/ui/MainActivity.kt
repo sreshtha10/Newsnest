@@ -40,8 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-//todo notifications via work manager
-// fix theme and lang change bugs
+// todo fix error lang change
 
 class MainActivity : AppCompatActivity() {
 
