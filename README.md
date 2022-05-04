@@ -9,6 +9,7 @@ News app for Android devices.
 * Multilingual news support (Hindi and English)
 * Notifications
 * Bug fixes
+* User Settings are now stored in SharedPreferences instead of local SQLite Database.
 
 ## Features
 
