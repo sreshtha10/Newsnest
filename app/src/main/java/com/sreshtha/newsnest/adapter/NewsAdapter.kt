@@ -117,6 +117,4 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.BreakingNewsViewHolder>() {
             //todo toast
         }
     }
-
-
 }
